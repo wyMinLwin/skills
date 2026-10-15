@@ -8,10 +8,10 @@ A Claude Code plugin marketplace by Wai Yan Min Lwin.
 
 ## Install
 
-From GitHub (after pushing this folder to a repo):
+From GitHub:
 
 ```
-/plugin marketplace add <github-user>/<repo>
+/plugin marketplace add wyMinLwin/skills
 /plugin install explain-with-sketch@gpl
 ```
 
