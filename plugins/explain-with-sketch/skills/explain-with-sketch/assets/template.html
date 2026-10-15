@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   explain-with-sketch — hand-drawn card explainer
+   Keep this whole <style> block. Only add cards in <main>.
+   ============================================================ */
+:root {
+  --page: #f3f3f1;
+  --dot: #d9d9d4;
+  --paper: #ffffff;
+  --ink: #2b2b2b;
+  --muted: #7a7a74;
+  --line: #e4e4df;
+  --yellow: #fde9a6;
+  --blue: #bfdcff;
+  --purple: #d9cbff;
+  --green: #c9efc4;
+  --orange: #ffd2a8;
+  --pink: #ffc9d6;
+  --gray: #ececea;
+  --u-blue: #5b8def;
+  --u-orange: #f0913a;
+  --u-purple: #8f6bf0;
+  --u-green: #3fae5a;
+  --u-red: #e2574c;
+  --shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 14px rgba(0,0,0,.05);
+  --hand: "Architects Daughter", "Comic Sans MS", "Segoe Print", cursive;
+  --note: "Caveat", "Architects Daughter", cursive;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #18181a; --dot: #2a2a2e; --paper: #222225; --ink: #e9e7e2; --muted: #a09e97; --line: #34343a;
+    --yellow: #5c4f1f; --blue: #1f3d63; --purple: #3c2f66; --green: #234a2b; --orange: #5e3a1c; --pink: #5a2a37; --gray: #333338;
+    --u-blue: #7ea6ff; --u-orange: #ffad60; --u-purple: #b29bff; --u-green: #6fd08a; --u-red: #ff8378;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"] {
+  --page: #18181a; --dot: #2a2a2e; --paper: #222225; --ink: #e9e7e2; --muted: #a09e97; --line: #34343a;
+  --yellow: #5c4f1f; --blue: #1f3d63; --purple: #3c2f66; --green: #234a2b; --orange: #5e3a1c; --pink: #5a2a37; --gray: #333338;
+  --u-blue: #7ea6ff; --u-orange: #ffad60; --u-purple: #b29bff; --u-green: #6fd08a; --u-red: #ff8378;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background-color: var(--page);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+  background-size: 18px 18px;
+  color: var(--ink);
+  font-family: var(--hand);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+code, .mono { font-family: var(--mono); font-size: .82em; }
+
+/* ---------- page header ---------- */
+.top { max-width: 1320px; margin: 0 auto; padding: 36px 16px 8px; }
+.top h1 { font-size: clamp(26px, 4vw, 38px); margin: 0 0 6px; font-weight: 400; }
+.top .ask { font-family: var(--note); font-size: 22px; color: var(--muted); margin: 0 0 14px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 13px; color: var(--muted); }
+.meta code { color: var(--ink); }
+.legend { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); }
+
+/* ---------- layouts: <main class="story | single | grid"> ---------- */
+main { max-width: 1320px; margin: 0 auto; padding: 18px 16px 48px; }
+
+/* grid — a board of independent cards */
+main.grid {
+  display: grid; gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+}
+
+/* story — one column, read top to bottom, numbered, arrows between steps */
+main.story { max-width: 940px; display: flex; flex-direction: column; counter-reset: step; }
+main.story .card {
+  min-height: 0; padding: 22px 26px 14px;
+  display: grid; column-gap: 28px;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-areas: "h h" "s c" "s p";
+  grid-template-rows: auto 1fr auto;
+}
+main.story .card + .card { margin-top: 46px; position: relative; }
+main.story .card + .card::before {
+  content: ""; position: absolute; top: -42px; left: 50%; width: 20px; height: 38px; margin-left: -10px;
+  background: var(--muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 44' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 3 C 7 15, 13 26, 10 38'/%3E%3Cpath d='M4 31 L10 40 L16 31'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 44' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 3 C 7 15, 13 26, 10 38'/%3E%3Cpath d='M4 31 L10 40 L16 31'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+main.story .card h2 { grid-area: h; text-align: left; font-size: 21px; display: flex; align-items: center; gap: 10px; }
+main.story .card:not(.extra) h2::before {
+  counter-increment: step; content: counter(step);
+  flex: none; width: 30px; height: 30px; display: grid; place-items: center; font-size: 15px;
+  border: 1.8px solid var(--ink); border-radius: 50% 46% 52% 48%; background: var(--yellow); filter: url(#wobble);
+}
+main.story .sketch { grid-area: s; min-height: 190px; }
+main.story .cap { grid-area: c; text-align: left; font-size: 16px; align-self: center; margin: 0 0 12px; }
+main.story .proof { grid-area: p; }
+main.story .card.extra { grid-template-columns: 1fr; grid-template-areas: "h" "s" "c" "p"; }
+main.story .card.extra .cap { text-align: center; }
+
+/* header + footer follow the layout's width */
+body:has(main.story) :is(.top, footer) { max-width: 940px; }
+body:has(main.single) :is(.top, footer) { max-width: 1040px; }
+
+/* single — one big sketch; .extra cards sit side by side underneath */
+main.single { max-width: 1040px; display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
+main.single .card:not(.extra) { grid-column: 1 / -1; min-height: 440px; padding: 26px 30px 16px; }
+main.single .card:not(.extra) h2 { font-size: 24px; }
+main.single .card:not(.extra) .cap { font-size: 16.5px; max-width: 680px; margin-inline: auto; }
+@media (min-width: 760px) { main.single .card:not(.extra) .sketch { zoom: 1.3; } }
+
+@media (max-width: 680px) {
+  main.story .card { grid-template-columns: 1fr; grid-template-areas: "h" "s" "c" "p"; padding: 18px 18px 12px; }
+  main.story .cap { text-align: center; }
+  main.single { grid-template-columns: 1fr; }
+}
+
+/* ---------- card ---------- */
+.card {
+  background: var(--paper);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 18px 18px 12px;
+  display: flex; flex-direction: column;
+  min-height: 300px;
+  min-width: 0;
+}
+.card.wide { grid-column: span 2; }
+@media (max-width: 680px) { .card.wide { grid-column: auto; } }
+.card h2 { text-align: center; font-size: 19px; font-weight: 400; margin: 2px 0 14px; }
+.card h2 span { position: relative; display: inline-block; }
+.card h2 span::after {
+  content: ""; position: absolute; left: -6%; right: -6%; bottom: -3px; height: 3px;
+  background: var(--u, var(--u-blue)); border-radius: 3px 8px 2px 9px;
+  transform: rotate(-.7deg); filter: url(#wobble); opacity: .9;
+}
+.u-blue { --u: var(--u-blue); } .u-orange { --u: var(--u-orange); } .u-purple { --u: var(--u-purple); }
+.u-green { --u: var(--u-green); } .u-red { --u: var(--u-red); }
+.sketch {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; padding: 6px 0 10px; min-width: 0;
+}
+.cap { text-align: center; margin: 4px 0 8px; font-size: 14.5px; }
+
+/* proof drawer */
+.proof { border-top: 1.5px dashed var(--line); padding-top: 6px; font-size: 12.5px; color: var(--muted); }
+.proof summary { cursor: pointer; list-style: none; display: inline-flex; gap: 6px; align-items: center; }
+.proof summary::-webkit-details-marker { display: none; }
+.proof summary::before { content: "▸"; transition: transform .15s; }
+.proof[open] summary::before { transform: rotate(90deg); }
+.proof ul { margin: 6px 0 2px; padding-left: 16px; }
+.proof li { margin: 3px 0; overflow-wrap: anywhere; }
+.proof code { color: var(--ink); }
+
+/* ---------- sketch primitives ---------- */
+/* Every bordered shape draws its outline on ::before with the wobble filter,
+   so the line looks hand-drawn while the text stays crisp. */
+.box, .pill, .win, .bubble, .note, .file, .phone, .unknown, .stat-box {
+  position: relative; isolation: isolate; color: var(--ink);
+}
+.box::before, .pill::before, .win::before, .bubble::before, .note::before,
+.file::before, .phone::before, .unknown::before, .stat-box::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--fill, var(--paper));
+  border: 1.8px solid var(--ink);
+  border-radius: 10px 14px 9px 13px / 13px 9px 14px 10px;
+  filter: url(#wobble);
+}
+.yellow { --fill: var(--yellow); } .blue { --fill: var(--blue); } .purple { --fill: var(--purple); }
+.green { --fill: var(--green); } .orange { --fill: var(--orange); } .pink { --fill: var(--pink); }
+.gray { --fill: var(--gray); }
+
+.box { padding: 9px 13px; text-align: center; font-size: 13.5px; min-width: 70px; max-width: 100%; overflow-wrap: anywhere; }
+.box small, .unknown small, .sub { display: block; overflow-wrap: anywhere; font-size: 11.5px; color: var(--muted); }
+.pill { padding: 3px 11px; font-size: 12.5px; white-space: nowrap; }
+.pill::before { border-radius: 999px; }
+.unknown { padding: 9px 13px; color: var(--muted); font-size: 13px; text-align: center; }
+.unknown::before { border-style: dashed; background: transparent; }
+
+/* app/browser window */
+.win { width: 100%; max-width: 230px; padding: 22px 10px 10px; font-size: 12.5px; }
+.win .bar { position: absolute; top: 6px; left: 10px; right: 10px; display: flex; gap: 4px; align-items: center; font-size: 10.5px; color: var(--muted); }
+.win .bar i { width: 6px; height: 6px; border: 1.3px solid var(--ink); border-radius: 50%; }
+.win .bar span { margin-left: 6px; }
+.win .ln { height: 6px; border-radius: 4px; background: var(--line); margin: 6px 0; }
+.win .ln.s { width: 60%; }
+
+/* phone */
+.phone { width: 74px; height: 128px; padding: 18px 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 12px; }
+.phone::before { border-radius: 14px; }
+
+/* speech bubble */
+.bubble { padding: 8px 12px; font-size: 13px; max-width: 240px; }
+.bubble::after {
+  content: ""; position: absolute; left: 18px; bottom: -7px; width: 12px; height: 12px;
+  background: var(--fill, var(--paper)); border-right: 1.8px solid var(--ink); border-bottom: 1.8px solid var(--ink);
+  transform: rotate(45deg); z-index: -1;
+}
+
+/* code note / sticky */
+.note { font-family: var(--mono); font-size: 11.5px; padding: 10px 12px; max-width: 100%; transform: rotate(-.6deg); text-align: left; }
+.note pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; }
+.note .hl, .hl { background: linear-gradient(transparent 45%, var(--yellow) 45% 92%, transparent 92%); padding: 0 2px; }
+
+/* file with folded corner */
+.file { width: 54px; height: 66px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; font-size: 10.5px; }
+.file::before { border-radius: 4px 14px 4px 4px; }
+
+/* stats */
+.stat { text-align: center; }
+.stat b { display: block; font-size: 40px; font-weight: 400; line-height: 1; }
+.stat span { font-size: 12.5px; color: var(--muted); }
+
+/* bar chart: <i style="--h:60%"><em>12</em></i> */
+.bars { display: flex; align-items: flex-end; gap: 8px; height: 120px; padding: 0 4px; border-bottom: 1.8px solid var(--ink); }
+.bars i { position: relative; width: 22px; height: var(--h); background: var(--fill, var(--orange)); border: 1.6px solid var(--ink); border-bottom: 0; border-radius: 4px 4px 0 0; filter: url(#wobble); }
+.bars em { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 11px; }
+.bar-labels { display: flex; gap: 8px; padding: 0 4px; font-size: 10.5px; color: var(--muted); }
+.bar-labels span { width: 22px; text-align: center; }
+
+/* layout helpers */
+.row { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.row.nowrap { flex-wrap: nowrap; gap: 6px; }
+.stack { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.stack.left { align-items: flex-start; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+.split { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; width: 100%; align-items: start; }
+.split .divider { width: 0; align-self: stretch; border-left: 1.8px dashed var(--line); }
+.split h3 { font-size: 13px; font-weight: 400; margin: 0 0 6px; text-align: center; color: var(--muted); }
+.anno { font-family: var(--note); font-size: 17px; color: var(--muted); line-height: 1.1; }
+.label { font-size: 11.5px; color: var(--muted); text-align: center; }
+
+/* numbered steps */
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; width: 100%; }
+.steps li { position: relative; padding: 1px 0 0 31px; min-height: 22px; font-size: 13.5px; }
+.steps li::before {
+  counter-increment: s; content: counter(s);
+  position: absolute; left: 0; top: 0; width: 22px; height: 22px; display: grid; place-items: center; font-size: 12px;
+  border: 1.6px solid var(--ink); border-radius: 50% 45% 52% 48%; background: var(--fill, var(--yellow)); filter: url(#wobble);
+}
+.steps { counter-reset: s; }
+
+/* check list */
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; width: 100%; font-size: 13.5px; }
+.checks li { display: flex; gap: 8px; align-items: flex-start; }
+.checks .ico { flex: none; margin-top: 1px; }
+
+/* icons + arrows (from the sprite below) */
+.ico { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; filter: url(#wobble); overflow: visible; }
+.ico.lg { width: 40px; height: 40px; }
+.ico.xl { width: 58px; height: 58px; }
+.arr { width: 40px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; filter: url(#wobble); flex: none; overflow: visible; }
+.arr.down { width: 18px; height: 34px; }
+.arr.curve { width: 52px; height: 32px; }
+.ok { color: var(--u-green); } .bad { color: var(--u-red); } .dim { color: var(--muted); }
+
+footer { max-width: 1320px; margin: 0 auto; padding: 0 16px 40px; font-size: 12.5px; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- ============ SVG sprite: wobble filter + icons. Do not remove. ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <!-- arrows -->
+  <symbol id="arrow-r" viewBox="0 0 64 20"><path d="M3 11 C 18 7, 36 14, 57 10"/><path d="M49 4 L58 10 L49 16"/></symbol>
+  <symbol id="arrow-l" viewBox="0 0 64 20"><path d="M61 9 C 46 13, 28 6, 7 10"/><path d="M15 4 L6 10 L15 16"/></symbol>
+  <symbol id="arrow-d" viewBox="0 0 20 44"><path d="M10 3 C 7 15, 13 26, 10 38"/><path d="M4 31 L10 40 L16 31"/></symbol>
+  <symbol id="arrow-curve" viewBox="0 0 64 40"><path d="M4 34 C 14 6, 40 4, 56 18"/><path d="M47 13 L57 19 L46 23"/></symbol>
+  <symbol id="arrow-both" viewBox="0 0 64 20"><path d="M7 10 C 22 7, 40 13, 57 10"/><path d="M49 4 L58 10 L49 16"/><path d="M15 4 L6 10 L15 16"/></symbol>
+  <!-- icons (24x24) -->
+  <symbol id="i-user" viewBox="0 0 24 40"><circle cx="12" cy="6" r="4.5"/><path d="M12 11 L12 26 M12 15 L4 21 M12 15 L20 21 M12 26 L6 37 M12 26 L18 37"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5 v13 c0 1.7 3.6 3 8 3 s8 -1.3 8 -3 V5"/><path d="M4 11.5 c0 1.7 3.6 3 8 3 s8 -1.3 8 -3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 13 L9.5 18 L20 6"/></symbol>
+  <symbol id="i-cross" viewBox="0 0 24 24"><path d="M5 5 L19 19 M19 5 L5 19"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11 V8 a4 4 0 0 1 8 0 v3"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18 h10 a4 4 0 0 0 .5 -8 a5.5 5.5 0 0 0 -10.5 -1 a4 4 0 0 0 0 9 z"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7"/><path d="M12 2v3 M12 19v3 M2 12h3 M19 12h3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M4.9 19.1L7 17 M17 7l2.1-2.1"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3 h8 l4 4 v14 h-12 z M14 3 v4 h4"/><path d="M9 12 h6 M9 15 h6 M9 18 h4"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7 v11 h18 V9 h-9 l-2 -2 z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18 M12 3c3 3 3 15 0 18 M12 3c-3 3 -3 15 0 18"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7 v5 l3 2"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 L5 14 h6 l-1 8 l8 -12 h-6 z"/></symbol>
+  <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5 a2.5 2.5 0 1 1 3.5 2.3 c-.8 .4 -1 1 -1 1.7"/><path d="M12 16.5 v.6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15 L20.5 20.5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3.5 7 L12 13 L20.5 7"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4"/><path d="M12 12 h9 M18 12 v3 M15.5 12 v2.5"/></symbol>
+  <symbol id="i-queue" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="4" rx="1"/><rect x="3" y="11" width="18" height="4" rx="1"/><rect x="3" y="17" width="12" height="3" rx="1"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3 L22 20 H2 z"/><path d="M12 10 v4.5 M12 17 v.5"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8 V4.5 M9.5 13 v.5 M14.5 13 v.5 M3 13 h2 M19 13 h2"/><circle cx="12" cy="3.5" r="1"/></symbol>
+</svg>
+
+<header class="top">
+  <h1>{{TITLE}}</h1>
+  <p class="ask">“{{QUESTION}}”</p>
+  <div class="meta">
+    <span>repo <code>{{REPO}}</code></span>
+    <span>commit <code>{{COMMIT}}</code></span>
+    <span>{{DATE}}</span>
+  </div>
+  <div class="legend">
+    <span class="pill green">proof</span> every card lists the code it came from
+    <span class="pill gray">unknown</span> means we checked and could not confirm
+  </div>
+</header>
+
+<!-- Layout: story (default) · single · grid — see references/sketch-style.md -->
+<main class="story">
+
+  <!-- =====================================================================
+       EXAMPLE CARDS — they show every sketch part. Delete every example
+       card (each is marked with an example attribute) and write your own
+       cards in the same shape:
+       <article class="card"> h2 > span · .sketch · p.cap · details.proof
+       ===================================================================== -->
+
+  <!-- FLOW: left-to-right boxes + arrows -->
+  <article class="card" data-example>
+    <h2 class="u-blue"><span>What saving a note does</span></h2>
+    <div class="sketch">
+      <div class="row nowrap">
+        <div class="box blue">You click<br>Save</div>
+        <svg class="arr"><use href="#arrow-r"/></svg>
+        <div class="box yellow">API<small>POST /notes</small></div>
+        <svg class="arr"><use href="#arrow-r"/></svg>
+        <div class="stack"><svg class="ico lg"><use href="#i-db"/></svg><span class="label">notes table</span></div>
+      </div>
+      <span class="anno">↳ returns the new id</span>
+    </div>
+    <p class="cap">The page sends the note. The API stores it. You get an id back.</p>
+    <details class="proof"><summary>proof · 3 refs</summary><ul>
+      <li><code>example/web/NoteEditor.tsx:58</code> — onSave posts to /notes</li>
+      <li><code>example/api/routes/notes.ts:21</code> — handler for POST /notes</li>
+      <li><code>example/api/db/notes.ts:12</code> — INSERT … RETURNING id</li>
+    </ul></details>
+  </article>
+
+  <!-- STEPS: numbered sequence -->
+  <article class="card" data-example>
+    <h2 class="u-orange"><span>Step by step</span></h2>
+    <div class="sketch">
+      <ol class="steps">
+        <li>Check the user is logged in <span class="pill green">auth.ts:14</span></li>
+        <li>Validate title ≤ 200 chars</li>
+        <li>Insert row, get id</li>
+        <li>Send <code>201</code> with the note</li>
+      </ol>
+    </div>
+    <p class="cap">Four steps, always in this order.</p>
+    <details class="proof"><summary>proof · 2 refs</summary><ul>
+      <li><code>example/api/routes/notes.ts:21-44</code> — the full handler</li>
+      <li><code>example/api/validate.ts:8</code> — max length 200</li>
+    </ul></details>
+  </article>
+
+  <!-- MAP: where the code lives -->
+  <article class="card" data-example>
+    <h2 class="u-purple"><span>Where the code lives</span></h2>
+    <div class="sketch">
+      <div class="grid2">
+        <div class="box purple"><svg class="ico"><use href="#i-globe"/></svg><br>web/<small>React pages</small></div>
+        <div class="box yellow"><svg class="ico"><use href="#i-gear"/></svg><br>api/<small>HTTP routes</small></div>
+        <div class="box green"><svg class="ico"><use href="#i-db"/></svg><br>api/db/<small>SQL queries</small></div>
+        <div class="box gray"><svg class="ico"><use href="#i-clock"/></svg><br>jobs/<small>nightly cleanup</small></div>
+      </div>
+    </div>
+    <p class="cap">Four folders. Each does one job.</p>
+    <details class="proof"><summary>proof · 1 ref</summary><ul>
+      <li><code>example/package.json:5</code> — workspaces: web, api, jobs</li>
+    </ul></details>
+  </article>
+
+  <!-- WHY: code note + bubble explaining a rule -->
+  <article class="card" data-example>
+    <h2 class="u-blue"><span>Why the title gets cut</span></h2>
+    <div class="sketch">
+      <div class="bubble yellow">Why is my title shorter?</div>
+      <div class="note"><pre>if (title.length &gt; 200)
+  title = <span class="hl">title.slice(0, 200)</span></pre></div>
+      <span class="anno">it trims, it does not reject</span>
+    </div>
+    <p class="cap">Long titles are cut at 200 characters, silently.</p>
+    <details class="proof"><summary>proof · 1 ref</summary><ul>
+      <li><code>example/api/validate.ts:8-9</code> — slice, no error thrown</li>
+    </ul></details>
+  </article>
+
+  <!-- WHO CALLS WHAT: actor → hub → fan-out -->
+  <article class="card" data-example>
+    <h2 class="u-green"><span>Who uses the notes API</span></h2>
+    <div class="sketch">
+      <div class="row nowrap">
+        <div class="stack"><svg class="ico lg"><use href="#i-user"/></svg><span class="label">web app</span></div>
+        <svg class="arr"><use href="#arrow-r"/></svg>
+        <div class="box green">notes API</div>
+        <svg class="arr"><use href="#arrow-l"/></svg>
+        <div class="stack"><svg class="ico lg"><use href="#i-clock"/></svg><span class="label">cleanup job</span></div>
+      </div>
+      <div class="row"><span class="pill blue">GET /notes</span><span class="pill yellow">POST /notes</span><span class="pill pink">DELETE /notes/:id</span></div>
+    </div>
+    <p class="cap">Two callers. The job only deletes.</p>
+    <details class="proof"><summary>proof · 2 refs</summary><ul>
+      <li><code>example/web/api.ts:3-30</code> — three fetch calls</li>
+      <li><code>example/jobs/cleanup.ts:17</code> — DELETE only</li>
+    </ul></details>
+  </article>
+
+  <!-- BEFORE / AFTER -->
+  <article class="card" data-example>
+    <h2 class="u-orange"><span>Draft vs saved</span></h2>
+    <div class="sketch">
+      <div class="split">
+        <div class="stack"><h3>draft</h3><div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="ln"></div><div class="ln s"></div></div><span class="label">lives in localStorage</span></div>
+        <div class="divider"></div>
+        <div class="stack"><h3>saved</h3><svg class="ico xl"><use href="#i-db"/></svg><span class="label">lives in the database</span></div>
+      </div>
+    </div>
+    <p class="cap">Drafts stay in your browser until you press Save.</p>
+    <details class="proof"><summary>proof · 1 ref</summary><ul>
+      <li><code>example/web/useDraft.ts:6</code> — localStorage.setItem("draft", …)</li>
+    </ul></details>
+  </article>
+
+  <!-- NUMBERS: stats + bars -->
+  <article class="card" data-example>
+    <h2 class="u-purple"><span>By the numbers</span></h2>
+    <div class="sketch">
+      <div class="row" style="gap:28px">
+        <div class="stat"><b>3</b><span>routes</span></div>
+        <div class="stat"><b>200</b><span>max title chars</span></div>
+      </div>
+      <div>
+        <div class="bars"><i style="--h:30%"><em>3</em></i><i style="--h:80%"><em>8</em></i><i style="--h:50%"><em>5</em></i></div>
+        <div class="bar-labels"><span>web</span><span>api</span><span>jobs</span></div>
+      </div>
+      <span class="label">files per folder</span>
+    </div>
+    <p class="cap">Small app: most code sits in the API.</p>
+    <details class="proof"><summary>proof · 1 ref</summary><ul>
+      <li>counted with <code>find example -name '*.ts'</code></li>
+    </ul></details>
+  </article>
+
+  <!-- UNKNOWN: always include when something could not be confirmed. Class "extra" = not a numbered step -->
+  <article class="card extra" data-example>
+    <h2 class="u-red"><span>What we couldn't confirm</span></h2>
+    <div class="sketch">
+      <div class="unknown"><svg class="ico"><use href="#i-question"/></svg><br>How often the cleanup job runs<small>schedule lives outside the repo</small></div>
+      <div class="unknown">Which DB engine runs in production<small>only a local SQLite config was found</small></div>
+    </div>
+    <p class="cap">We checked. The repo doesn't say.</p>
+    <details class="proof"><summary>what we checked</summary><ul>
+      <li><code>example/jobs/cleanup.ts</code> — no schedule inside</li>
+      <li>searched for <code>cron</code>, <code>schedule</code> — no hits</li>
+    </ul></details>
+  </article>
+
+  <!-- START HERE: reading list. Class "extra" = not a numbered step -->
+  <article class="card extra" data-example>
+    <h2 class="u-green"><span>Where to start reading</span></h2>
+    <div class="sketch">
+      <ul class="checks">
+        <li><svg class="ico"><use href="#i-doc"/></svg><span><code>api/routes/notes.ts</code><span class="sub">every route in one file</span></span></li>
+        <li><svg class="ico"><use href="#i-doc"/></svg><span><code>web/NoteEditor.tsx</code><span class="sub">the save button</span></span></li>
+        <li><svg class="ico"><use href="#i-doc"/></svg><span><code>api/db/notes.ts</code><span class="sub">all SQL</span></span></li>
+      </ul>
+    </div>
+    <p class="cap">Open these three files, in this order.</p>
+    <details class="proof"><summary>proof · 3 refs</summary><ul>
+      <li>same refs as the cards above</li>
+    </ul></details>
+  </article>
+
+</main>
+
+<footer>Read-only explainer · nothing in the repo was changed · every card lists its proof</footer>
+</body>
+</html>

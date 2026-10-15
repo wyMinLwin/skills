@@ -1,0 +1,9 @@
+{
+  "name": "explain-with-sketch",
+  "version": "0.1.0",
+  "description": "Read-only codebase explainer: answers 'how does X work' with verified facts, drawn as hand-sketched cards in an artifact or standalone HTML page.",
+  "author": {
+    "name": "Wai Yan Min Lwin"
+  },
+  "keywords": ["explain", "codebase", "onboarding", "diagram", "sketch", "read-only"]
+}
