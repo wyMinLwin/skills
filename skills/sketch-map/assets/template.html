@@ -10,9 +10,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   explain-with-sketch — cheat-sheet poster
+   sketch-map — one-page cheat-sheet map
    Keep this whole <style> block, the SVG sprite and the wires
    script. Only write sections inside .sheet.
+   Words: a label (≤ 4 words) + at most one detail line per shape.
    Layout: two columns on one cream sheet. Left = where it sits,
    states, shape, rules. Right = the main flow and its outcomes.
    ============================================================ */
@@ -70,7 +71,7 @@ code, .c { font-family: var(--mono); }
 @media (max-width: 1100px) { .sheet { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- title block ---------- */
-.title h1 { font-size: clamp(52px, 8vw, 104px); font-weight: 400; line-height: .9; margin: 0 0 10px; letter-spacing: .01em; }
+.title h1 { font-size: clamp(52px, 8vw, 104px); font-weight: 400; line-height: 1; margin: 0 0 14px; letter-spacing: .01em; }
 .title .what { font-size: clamp(22px, 2.6vw, 32px); margin: 0; line-height: 1.15; }
 .title .where { font-family: var(--mono); font-size: 13px; color: var(--muted); margin: 6px 0 0; }
 .title .meta { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 4px 14px; }
@@ -91,10 +92,10 @@ code, .c { font-family: var(--mono); }
   background: var(--fill); border-radius: var(--r, 12px); filter: url(#rough);
 }
 
-/* text tiers inside any shape: .t main label · .s plain sub line · .c short technical detail (exact when it is code) */
-.t { display: block; font-size: 19px; line-height: 1.15; }
-.s { display: block; font-size: 15px; line-height: 1.2; }
-.c { display: block; font-size: 12px; line-height: 1.35; color: var(--muted); margin-top: 3px; }
+/* words inside any shape: .t label · then ONE detail line: .s plain phrase or .c exact code value */
+.t { display: block; font-size: 20px; line-height: 1.15; }
+.s { display: block; font-size: 16px; line-height: 1.2; }
+.c { display: block; font-size: 12.5px; line-height: 1.35; color: var(--muted); margin-top: 3px; }
 .here .c, .here .s { color: var(--here-ink); opacity: .88; }
 .ok { color: var(--yes); } .x { color: var(--no); }
 
@@ -103,7 +104,7 @@ code, .c { font-family: var(--mono); }
 .blob.big .t { font-size: 30px; }
 .blob.wide { margin-inline: 6%; }
 .step { --fill: var(--peach); --r: 14px; padding: 22px 18px; min-height: 112px; display: flex; flex-direction: column; justify-content: center; }
-.step .t { font-size: 23px; }
+.step .t { font-size: 24px; }
 .step[data-n]::after {
   content: attr(data-n); position: absolute; left: -17px; top: -15px; width: 34px; height: 34px; border-radius: 50%;
   background: var(--ink); color: var(--page); display: grid; place-items: center; font-size: 15px;
@@ -123,6 +124,7 @@ code, .c { font-family: var(--mono); }
 
 /* ---------- context row: upstream → here → downstream ---------- */
 .ctx { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr) auto minmax(0, 1fr); align-items: center; gap: 6px; padding-top: 58px; }
+.ctx > .blob:not(.big) { padding: 18px 16px; }
 .hop { position: relative; align-self: stretch; display: flex; align-items: center; justify-content: center; }
 .hop .note { position: absolute; left: 50%; bottom: calc(100% + 6px); transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 16px; }
 .hop .note .c { margin-top: 0; }
@@ -140,10 +142,10 @@ code, .c { font-family: var(--mono); }
 .outs { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .outs.across { flex-direction: row; flex-wrap: wrap; }
 .outs.across > * { flex: 1 1 110px; }
-.via { min-height: 84px; display: flex; align-items: center; font-size: 16px; }
+.via { min-height: 68px; display: flex; align-items: center; font-size: 16px; }
 .via span { margin-left: calc((100% - 84px) * .1914 + 16px); }
 .flow { display: flex; flex-direction: column; }
-.flow > .blob { margin-bottom: 64px; }
+.flow > .blob { margin-bottom: 52px; }
 .cases { display: flex; flex-direction: column; gap: 22px; }
 @media (max-width: 640px) {
   .row { column-gap: 34px; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); }
@@ -237,20 +239,20 @@ code, .c { font-family: var(--mono); }
   <!-- =====================================================================
        EXAMPLE SECTIONS: a made-up "expense claim" screen that shows every
        part. Delete every element marked with the example attribute and
-       write your own sections in the same shape (see references/sketch-style.md).
+       write your own sections in the same shape (see references/map-style.md).
        ===================================================================== -->
 
   <!-- CONTEXT: what feeds in → you are here → what takes it out -->
   <section class="part" data-example>
     <div class="ctx">
-      <div class="blob" id="ex-up"><span class="t">Receipts</span><span class="s">upload screen</span><span class="c">RCP… at R</span></div>
+      <div class="blob" id="ex-up"><span class="t">Receipts</span><span class="s">upload screen</span></div>
       <div class="hop"><span class="note"><span class="n">1</span>receipts attached<span class="c">status R</span></span><svg class="arr"><use href="#a-r"/></svg></div>
-      <div class="blob big here" id="ex-here"><span class="t">Expense claim</span><span class="s">EXP-210</span><span class="c">you are here</span></div>
+      <div class="blob big here" id="ex-here"><span class="t">EXP-210</span><span class="s">you are here</span></div>
       <div class="hop"><span class="note"><span class="n">2</span>approved claims<span class="c">status A</span></span><svg class="arr"><use href="#a-r"/></svg></div>
-      <div class="blob" id="ex-down" data-to="ex-here" data-wire="under"><span class="t">Payout run</span><span class="s">weekly batch</span><span class="c">PAY… voucher</span></div>
+      <div class="blob" id="ex-down" data-to="ex-here" data-wire="under"><span class="t">Payout run</span><span class="c">PAY… voucher</span></div>
     </div>
-    <p class="ctx-after"><span class="n">3</span>paid → comes back to close<span class="c">close button on EXP-210</span></p>
-    <div class="band"><span class="t">One trip · one claim · one approver → then pay</span></div>
+    <p class="ctx-after"><span class="n">3</span>paid → back to close<span class="c">Close button</span></p>
+    <div class="band"><span class="t">One trip · one claim · one approver → pay</span></div>
     <details class="proof"><summary>proof · 3 refs</summary><ul>
       <li><code>example/claims/submit.ts:14</code>: only receipts at R are listed</li>
       <li><code>example/claims/approve.ts:40</code>: approve sets A</li>
@@ -260,7 +262,7 @@ code, .c { font-family: var(--mono); }
 
   <!-- STATUS LINES: every state field, every value, who sets each move -->
   <section class="part" data-example>
-    <h2>Two status lines: don't mix them up</h2>
+    <h2>Two status lines</h2>
     <div class="lane">
       <p class="lane-name">Claim <span class="c">EXP…</span></p>
       <div class="chain">
@@ -296,14 +298,14 @@ code, .c { font-family: var(--mono); }
     <h2>What one claim holds</h2>
     <div class="pair">
       <div class="stack">
-        <div class="box here"><span class="t">Header <span class="c" style="display:inline">EXP2610-…</span></span><span class="s">trip · owner · currency</span></div>
+        <div class="box here"><span class="t">Header</span><span class="s">trip · owner · currency</span></div>
         <svg class="arr d"><use href="#a-d"/></svg>
-        <div class="box lav"><span class="t">Lines</span><span class="s">one per expense</span><span class="c">amount · tax · category</span></div>
+        <div class="box lav"><span class="t">Lines</span><span class="c">amount · tax · category</span></div>
         <svg class="arr d"><use href="#a-d"/></svg>
         <div class="box lav"><span class="t">Receipts</span><span class="c">RCP… linked at L</span></div>
       </div>
       <div class="panel">
-        <span class="t">Who touches it</span><span class="s">who asks · who signs</span>
+        <span class="t">Who touches it</span>
         <dl class="kv">
           <dt>Owner</dt><dd>creates, submits</dd>
           <dt>Approver</dt><dd>depends on limit ↓</dd>
@@ -321,13 +323,13 @@ code, .c { font-family: var(--mono); }
   <section class="part" data-example>
     <h2>Who can approve</h2>
     <div class="row">
-      <div class="blob" id="ex-q" data-to="ex-q1 ex-q2"><span class="t">Claim total vs limit</span><span class="c">LIMIT_APPROVE in settings</span></div>
+      <div class="blob" id="ex-q" data-to="ex-q1 ex-q2"><span class="t">Total vs limit</span><span class="c">LIMIT_APPROVE</span></div>
       <div class="outs">
         <div class="out mint" id="ex-q1"><span class="t">Within limit</span><span class="c">manager</span></div>
         <div class="out red" id="ex-q2"><span class="t">Over limit</span><span class="c">director only</span></div>
       </div>
     </div>
-    <div class="quirk"><span class="t">⚠ quirk: "total" leaves tax out</span><span class="c">compares net amount · approve.ts keeps it on purpose</span></div>
+    <div class="quirk"><span class="t">⚠ "total" means net, not gross</span><span class="c">compares net_amount</span></div>
     <div class="outputs">Prints: <span class="tag mint">claim PDF</span><span class="tag mint">CSV export</span></div>
     <details class="proof"><summary>proof · 3 refs</summary><ul>
       <li><code>example/claims/approve.ts:12-20</code>: limit check</li>
@@ -343,33 +345,33 @@ code, .c { font-family: var(--mono); }
   <!-- MAIN FLOW: start → numbered steps → every outcome of every step -->
   <section class="part" data-example>
     <h2>Submit a claim</h2>
-    <p class="lede">manual here · or auto from the receipts screen</p>
+    <p class="lede">manual · or from receipts</p>
     <div class="flow">
-      <div class="blob wide" id="ex-start" data-to="ex-1"><span class="t">Fill the header: trip first</span><span class="s">trip · owner · currency</span><span class="c">the trip filters what Add can show</span></div>
+      <div class="blob wide" id="ex-start" data-to="ex-1"><span class="t">Header first: trip</span><span class="s">trip filters the Add list</span></div>
       <div class="row">
         <div class="step" id="ex-1" data-n="1" data-to="ex-1a ex-1b ex-1c ex-2"><span class="t">Add lines</span><span class="c">popup → tick → OK</span></div>
         <div class="outs">
-          <div class="out red" id="ex-1a"><span class="t"><span class="x">✗</span> No trip picked yet</span><span class="c">popup refused</span></div>
-          <div class="out mint" id="ex-1b"><span class="t">Lists only receipts at R</span><span class="c">same trip · same currency</span></div>
-          <div class="out beige" id="ex-1c"><span class="t">Remove → receipt back to R</span><span class="c">free for another claim</span></div>
+          <div class="out red" id="ex-1a"><span class="t"><span class="x">✗</span> No trip yet</span><span class="s">popup refused</span></div>
+          <div class="out mint" id="ex-1b"><span class="t">Only receipts at R</span><span class="c">same trip · currency</span></div>
+          <div class="out beige" id="ex-1c"><span class="t">Remove → back to R</span><span class="s">free for other claims</span></div>
         </div>
       </div>
-      <div class="via"><span>add every line, then</span></div>
+      <div class="via"><span>all lines in, then</span></div>
       <div class="row">
         <div class="step" id="ex-2" data-n="2" data-to="ex-2a ex-2b ex-2c ex-3"><span class="t">Save</span><span class="c">claim → N</span></div>
         <div class="outs">
-          <div class="out mint" id="ex-2a"><span class="t">Claim number issued</span><span class="c">'EXP' + yymm + '-' + running no. · 12 chars</span></div>
-          <div class="out mint" id="ex-2b"><span class="t">Receipts R → L</span><span class="c">no other claim can take them</span></div>
-          <div class="out red" id="ex-2c"><span class="t"><span class="x">✗</span> Already submitted</span><span class="c">save refused</span></div>
+          <div class="out mint" id="ex-2a"><span class="t">Claim number issued</span><span class="c">'EXP' + yymm + '-' + no.</span></div>
+          <div class="out mint" id="ex-2b"><span class="t">Receipts R → L</span><span class="s">locked to this claim</span></div>
+          <div class="out red" id="ex-2c"><span class="t"><span class="x">✗</span> Already submitted</span><span class="c">status ≠ 'N'</span></div>
         </div>
       </div>
-      <div class="via"><span>check the total, then</span></div>
+      <div class="via"><span>total checked, then</span></div>
       <div class="row">
         <div class="step" id="ex-3" data-n="3" data-to="ex-3a ex-3b ex-3c"><span class="t">Submit</span><span class="c">claim → S · locked</span></div>
         <div class="outs">
-          <div class="out mint" id="ex-3a"><span class="t">Claim N → S <span class="ok">✓</span></span><span class="c">waits for the approver</span></div>
-          <div class="out mint" id="ex-3b"><span class="t">E-mail to approver</span><span class="c">template CLAIM_SUBMITTED</span></div>
-          <div class="out beige" id="ex-3c"><span class="t">NOTIFY_FLAG = 'Y'</span><span class="c">read by something outside the repo ?</span></div>
+          <div class="out mint" id="ex-3a"><span class="t">Claim N → S <span class="ok">✓</span></span><span class="s">waits for approver</span></div>
+          <div class="out mint" id="ex-3b"><span class="t">E-mail to approver</span><span class="c">CLAIM_SUBMITTED</span></div>
+          <div class="out beige" id="ex-3c"><span class="t">NOTIFY_FLAG = 'Y'</span><span class="s">reader not in repo ?</span></div>
         </div>
       </div>
     </div>
@@ -390,11 +392,11 @@ code, .c { font-family: var(--mono); }
     <div class="cases">
       <div class="row">
         <div class="box beige" id="ex-r1" data-to="ex-r1o"><span class="t">nothing paid yet</span></div>
-        <div class="outs"><div class="out mint" id="ex-r1o"><span class="t"><span class="ok">✓</span> claim → N · receipts L → R</span><span class="c">e-mail is not taken back</span></div></div>
+        <div class="outs"><div class="out mint" id="ex-r1o"><span class="t"><span class="ok">✓</span> claim → N · L → R</span><span class="s">e-mail stays sent</span></div></div>
       </div>
       <div class="row">
         <div class="box beige" id="ex-r2" data-to="ex-r2o"><span class="t">already paid</span></div>
-        <div class="outs"><div class="out red" id="ex-r2o"><span class="t"><span class="x">✗</span> can't revert</span><span class="c">reverse the payout first</span></div></div>
+        <div class="outs"><div class="out red" id="ex-r2o"><span class="t"><span class="x">✗</span> can't revert</span><span class="s">reverse payout first</span></div></div>
       </div>
     </div>
     <details class="proof"><summary>proof · 2 refs</summary><ul>
@@ -405,11 +407,11 @@ code, .c { font-family: var(--mono); }
 
   <!-- HAND-OFF: where the result goes next -->
   <section class="part" data-example>
-    <h2>Pay it: in the payout run</h2>
+    <h2>Then: the payout run</h2>
     <p class="lede">takes claims at A</p>
     <div class="row">
       <div class="blob" id="ex-p" data-to="ex-po"><span class="t">Weekly payout</span><span class="c">ticks claims at A</span></div>
-      <div class="outs"><div class="out mint" id="ex-po"><span class="t">Saved as PAY… <span class="ok">✓</span></span><span class="s">payment voucher</span><span class="c">claim → P · revert now blocked</span></div></div>
+      <div class="outs"><div class="out mint" id="ex-po"><span class="t">Saved as PAY… <span class="ok">✓</span></span><span class="c">claim → P · revert blocked</span></div></div>
     </div>
     <details class="proof"><summary>proof · 1 ref</summary><ul>
       <li><code>example/payout/run.ts:22-48</code>: voucher, claim → P</li>
@@ -419,10 +421,10 @@ code, .c { font-family: var(--mono); }
 </div>
 
 <footer class="foot">
-  <p data-example>? who reads NOTIFY_FLAG · when the payout run is scheduled: not confirmed in the repo</p>
+  <p data-example>? who reads NOTIFY_FLAG · payout schedule: not in the repo</p>
   <p data-example>start reading: <code>example/claims/submit.ts</code> → <code>example/claims/save.ts</code> → <code>example/db/schema.sql</code></p>
   <!-- legend: keep its meaning, write it in the user's language -->
-  <p><span class="ok">✓</span> happens · <span class="x">✗</span> refused · ? not confirmed in the repo · read-only explainer: nothing in the repo was changed</p>
+  <p><span class="ok">✓</span> happens · <span class="x">✗</span> refused · ? not confirmed in the repo · read-only: nothing in the repo was changed</p>
 </footer>
 
 </main>
@@ -487,7 +489,7 @@ code, .c { font-family: var(--mono); }
       if (!src.getClientRects().length) return;
       for (const id of src.dataset.to.trim().split(/\s+/)) {
         const dst = document.getElementById(id);
-        if (!dst) { console.warn('[explain-with-sketch] no element with id', id); continue; }
+        if (!dst) { console.warn('[sketch-map] no element with id', id); continue; }
         if (dst.getClientRects().length) wire(rel(src), rel(dst), src.dataset.wire || 'auto');
       }
     });

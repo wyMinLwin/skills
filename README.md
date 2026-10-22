@@ -1,58 +1,96 @@
 # gpl
 
-A Claude Code plugin marketplace by Wai Yan Min Lwin.
+Claude Code skills by Wai Yan Min Lwin. One plugin, `gpl-skills`, holds every skill, so one install gets them all.
 
-| Plugin | What it does |
+| Skill | What it does |
 |---|---|
-| `explain-with-sketch` | Read-only codebase explainer. Answers "how does X work?" with one hand-drawn cheat-sheet poster: where the thing sits, its status lines, what it holds, the main flow with every outcome of every step (✓ happens / ✗ refused), undo paths, rules and quirks. Before it draws anything, it reads every file the flow touches in full, logs each fact with a quoted `path:line`, and re-checks every ref. Delivered as an artifact or a standalone HTML page, in the user's language. Asks `Q1 - … / Q2 - …` when the question is unclear. |
+| `explain-with-sketch` | Answers "how does X work?" with hand-sketched cards in a story, single or grid layout. Each card has a sketch, a short caption and its proof. |
+| `sketch-map` | Answers "how does X work?" with one cheat-sheet map on a single page: where it sits, its states, the main flow with every outcome (✓ happens / ✗ refused), undo paths, rules and quirks. Short words and arrows only, no sentences. |
+
+Both are read-only. Before they draw anything they:
+
+- explore the whole tree and every candidate
+- read every file on the path in full
+- log each fact with a quoted `path:line`
+- trace one real case end to end
+- write and re-check a model of how the code works
+- pass a read gate
+- re-check every ref
+
+Pages and replies stay in the user's language. When a question is unclear, they ask `Q1 - … / Q2 - …` first.
 
 ## Install
 
-From GitHub:
+```
+/plugin install gpl-skills --marketplace wyMinLwin/skills
+```
+
+On older Claude Code:
 
 ```
 /plugin marketplace add wyMinLwin/skills
-/plugin install explain-with-sketch@gpl
-```
-
-From this folder locally (for testing):
-
-```
-/plugin marketplace add /Users/l/Desktop/skills
-/plugin install explain-with-sketch@gpl
+/plugin install gpl-skills@gpl
 ```
 
 Restart Claude Code after installing.
 
-## Use
-
-It triggers on its own for questions like "how does checkout work?" or "walk me through the auth flow". To call it directly:
+**Coming from 0.2.0 or earlier?** The old plugin was called `explain-with-sketch`. Replace it:
 
 ```
-/explain-with-sketch:explain-with-sketch how does the login flow work?
+/plugin marketplace update gpl
+/plugin uninstall explain-with-sketch@gpl
+/plugin install gpl-skills@gpl
+```
+
+## Use
+
+Both skills trigger on their own: "how does checkout work?" usually gets cards, while "cheat sheet of the auth flow" or "map out checkout" gets a map. To call one directly:
+
+```
+/gpl-skills:explain-with-sketch how does the login flow work?
+/gpl-skills:sketch-map map the login flow
 ```
 
 ## Layout
 
 ```
-.claude-plugin/marketplace.json          marketplace catalog
-plugins/explain-with-sketch/
-  .claude-plugin/plugin.json             plugin manifest
-  skills/explain-with-sketch/
-    SKILL.md                             the rules, reading discipline + workflow
-    references/sketch-style.md           poster sections, shapes, colors, wires
-    assets/template.html                 the cheat-sheet poster (open it to preview)
+.claude-plugin/
+  marketplace.json                 marketplace "gpl", one plugin at ./
+  plugin.json                      plugin "gpl-skills" (the version lives here)
+skills/
+  explain-with-sketch/
+    SKILL.md                       reading harness + card workflow
+    references/sketch-style.md     layouts, sketches, colors, density
+    assets/template.html           card page (open it to preview)
+  sketch-map/
+    SKILL.md                       reading harness + map workflow
+    references/map-style.md        sections, word limits, colors, wires
+    assets/template.html           one-page map (open it to preview)
+scripts/check-shared.sh            checks both skills carry the same harness
 ```
+
+The reading harness (rules, explore, read deeply, verify, red flags) is copied into each SKILL.md between `<!-- shared:harness -->` markers, so each skill still works on its own. Edit it in one place, copy it to the other, then run the check.
+
+## Add a skill
+
+Make `skills/<name>/SKILL.md`. Claude Code picks up every folder in `skills/` on its own. If the new skill reads code, give it the shared harness block too.
 
 ## Release a new version
 
-Bump `version` in `plugins/explain-with-sketch/.claude-plugin/plugin.json`, in the plugin entry in `.claude-plugin/marketplace.json`, and in that file's `metadata`. Then check:
+Bump `version` in `.claude-plugin/plugin.json` and `metadata.version` in `.claude-plugin/marketplace.json`. Then run:
 
 ```
+bash scripts/check-shared.sh
 claude plugin validate .
 ```
 
 ## Versions
 
-- **0.2.0**: the cheat-sheet poster replaces the card layouts. It has a context row with "you are here", status lines, a numbered step spine where each step fans out to its outcomes, and revert rows. Reading is deeper: a full survey before deciding anything, every file on the path read in full, a quoted ledger, an 11-row coverage checklist, a read gate, and a verify pass. Pages stay in the user's language.
+- **0.3.0**: one plugin, `gpl-skills`, holds every skill. `explain-with-sketch` goes back to the 0.1.0 cards. The 0.2.0 poster becomes its own skill, `sketch-map`, now with short words only and sized to fit one page. The reading harness goes deeper, and both skills share it:
+  - explore every candidate and what calls it
+  - log open questions
+  - trace one real case end to end
+  - write a model, then read the core files a second time to check it
+  - a 7-box read gate
+- **0.2.0**: the cheat-sheet poster replaces the card layouts, with deeper reading: a full survey before deciding anything, every file on the path read in full, a quoted ledger, an 11-row coverage checklist, a read gate and a verify pass.
 - **0.1.0**: first release, with hand-sketched cards in a story, single or grid layout.

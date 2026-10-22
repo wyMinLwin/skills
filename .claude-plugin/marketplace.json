@@ -4,17 +4,16 @@
     "name": "Wai Yan Min Lwin"
   },
   "metadata": {
-    "description": "Claude Code skills by Wai Yan Min Lwin.",
-    "version": "0.2.0"
+    "description": "Claude Code skills by Wai Yan Min Lwin. One plugin, every skill.",
+    "version": "0.3.0"
   },
   "plugins": [
     {
-      "name": "explain-with-sketch",
-      "source": "./plugins/explain-with-sketch",
-      "description": "Read-only codebase explainer: reads every file a flow touches in full, then answers 'how does X work' with one hand-drawn cheat-sheet poster built only from cited code, as an artifact or standalone HTML page.",
-      "version": "0.2.0",
+      "name": "gpl-skills",
+      "source": "./",
+      "description": "Every skill in this repo in one install: explain-with-sketch (hand-sketched explainer cards) and sketch-map (one-page cheat-sheet map). Both are read-only and read deeply before they draw.",
       "category": "documentation",
-      "keywords": ["explain", "codebase", "onboarding", "diagram", "sketch", "cheat-sheet", "read-only"]
+      "keywords": ["explain", "codebase", "onboarding", "diagram", "sketch", "cheat-sheet", "map", "read-only"]
     }
   ]
 }
