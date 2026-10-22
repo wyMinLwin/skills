@@ -1,6 +1,6 @@
 # gpl
 
-Claude Code skills by Wai Yan Min Lwin. One plugin, `gpl-skills`, holds every skill, so one install gets them all.
+Claude Code skills by Wai Yan Min Lwin. One plugin, `gpl`, holds every skill, so one install gets them all.
 
 | Skill | What it does |
 |---|---|
@@ -22,14 +22,14 @@ Pages and replies stay in the user's language. When a question is unclear, they 
 ## Install
 
 ```
-/plugin install gpl-skills --marketplace wyMinLwin/skills
+/plugin install gpl --marketplace wyMinLwin/skills
 ```
 
 On older Claude Code:
 
 ```
 /plugin marketplace add wyMinLwin/skills
-/plugin install gpl-skills@gpl
+/plugin install gpl@gpl
 ```
 
 Restart Claude Code after installing.
@@ -39,7 +39,7 @@ Restart Claude Code after installing.
 ```
 /plugin marketplace update gpl
 /plugin uninstall explain-with-sketch@gpl
-/plugin install gpl-skills@gpl
+/plugin install gpl@gpl
 ```
 
 ## Use
@@ -47,8 +47,8 @@ Restart Claude Code after installing.
 Both skills trigger on their own: "how does checkout work?" usually gets cards, while "cheat sheet of the auth flow" or "map out checkout" gets a map. To call one directly:
 
 ```
-/gpl-skills:explain-with-sketch how does the login flow work?
-/gpl-skills:sketch-map map the login flow
+/gpl:explain-with-sketch how does the login flow work?
+/gpl:sketch-map map the login flow
 ```
 
 ## Layout
@@ -56,7 +56,7 @@ Both skills trigger on their own: "how does checkout work?" usually gets cards, 
 ```
 .claude-plugin/
   marketplace.json                 marketplace "gpl", one plugin at ./
-  plugin.json                      plugin "gpl-skills" (the version lives here)
+  plugin.json                      plugin "gpl" (the version lives here)
 skills/
   explain-with-sketch/
     SKILL.md                       reading harness + card workflow
@@ -86,7 +86,7 @@ claude plugin validate .
 
 ## Versions
 
-- **0.3.0**: one plugin, `gpl-skills`, holds every skill. `explain-with-sketch` goes back to the 0.1.0 cards. The 0.2.0 poster becomes its own skill, `sketch-map`, now with short words only and sized to fit one page. The reading harness goes deeper, and both skills share it:
+- **0.3.0**: one plugin, `gpl`, holds every skill. `explain-with-sketch` goes back to the 0.1.0 cards. The 0.2.0 poster becomes its own skill, `sketch-map`, now with short words only and sized to fit one page. The reading harness goes deeper, and both skills share it:
   - explore every candidate and what calls it
   - log open questions
   - trace one real case end to end

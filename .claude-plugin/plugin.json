@@ -1,5 +1,5 @@
 {
-  "name": "gpl-skills",
+  "name": "gpl",
   "version": "0.3.0",
   "description": "Read-only codebase explainers that read every file a flow touches in full before drawing anything. explain-with-sketch: hand-sketched cards (story, single or grid). sketch-map: a one-page cheat-sheet map, short words and arrows only.",
   "author": {

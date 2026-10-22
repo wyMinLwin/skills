@@ -75,7 +75,7 @@ Ask at most 4 questions, each answerable in a few words. If none of the conditio
 
 1. **Make a reading list.** Start from the entry point and list every repo file the flow touches: what it calls, what calls it, the data layer (SQL, queries, stored procedures, schema, models), the config, constants and enums it reads, and the code that takes results out. Add the tests that exercise the path: they point at edge cases and intended behavior, while the code stays the proof. If the list grows past ~40 files, stop and ask which part matters most, in the Step 1 format. Skip binary files and files git ignores, and note them in the ledger header.
 2. **Read every file on the list in full.** Each file you discover joins the list and gets read too.
-3. **Keep a ledger** in a scratch file outside the repo: the session's scratchpad if one is given, else `${TMPDIR:-/tmp}/gpl-skills/ledger-<topic>.md`. Its header is the reading list with each file's line count. Below that, one line per fact:
+3. **Keep a ledger** in a scratch file outside the repo: the session's scratchpad if one is given, else `${TMPDIR:-/tmp}/gpl/ledger-<topic>.md`. Its header is the reading list with each file's line count. Below that, one line per fact:
    `claim | path:line | quoted code`
 
    The quote goes last, so everything after the second ` | ` is code. A claim that something is absent quotes the search instead: `claim | searched: <pattern> in <scope> | no hits`. Your notes on branches and state writers go in the ledger too, and so do the next three items.
@@ -174,7 +174,7 @@ Re-open every ledger ref, including the ones in the trace and the model. Confirm
    - None of the placeholders above is left. A `{{` quoted from the repo's own code is fine.
    - Every `id` is unique.
    - Every id named in a `data-to` attribute exists.
-5. Save the file **outside the repo**: the session's scratchpad if one is given, else `${TMPDIR:-/tmp}/gpl-skills/map-<topic>.html`.
+5. Save the file **outside the repo**: the session's scratchpad if one is given, else `${TMPDIR:-/tmp}/gpl/map-<topic>.html`.
 
 ## Step 6: Deliver
 

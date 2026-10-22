@@ -9,7 +9,7 @@
   },
   "plugins": [
     {
-      "name": "gpl-skills",
+      "name": "gpl",
       "source": "./",
       "description": "Every skill in this repo in one install: explain-with-sketch (hand-sketched explainer cards) and sketch-map (one-page cheat-sheet map). Both are read-only and read deeply before they draw.",
       "category": "documentation",

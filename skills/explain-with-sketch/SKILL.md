@@ -75,7 +75,7 @@ Ask at most 4 questions, each answerable in a few words. If none of the conditio
 
 1. **Make a reading list.** Start from the entry point and list every repo file the flow touches: what it calls, what calls it, the data layer (SQL, queries, stored procedures, schema, models), the config, constants and enums it reads, and the code that takes results out. Add the tests that exercise the path: they point at edge cases and intended behavior, while the code stays the proof. If the list grows past ~40 files, stop and ask which part matters most, in the Step 1 format. Skip binary files and files git ignores, and note them in the ledger header.
 2. **Read every file on the list in full.** Each file you discover joins the list and gets read too.
-3. **Keep a ledger** in a scratch file outside the repo: the session's scratchpad if one is given, else `${TMPDIR:-/tmp}/gpl-skills/ledger-<topic>.md`. Its header is the reading list with each file's line count. Below that, one line per fact:
+3. **Keep a ledger** in a scratch file outside the repo: the session's scratchpad if one is given, else `${TMPDIR:-/tmp}/gpl/ledger-<topic>.md`. Its header is the reading list with each file's line count. Below that, one line per fact:
    `claim | path:line | quoted code`
 
    The quote goes last, so everything after the second ` | ` is code. A claim that something is absent quotes the search instead: `claim | searched: <pattern> in <scope> | no hits`. Your notes on branches and state writers go in the ledger too, and so do the next three items.
@@ -179,7 +179,7 @@ Each card has exactly four parts:
    Set `<html lang>` to the user's language, and write the header legend and the footer in it (keep their meaning).
 3. Set `<main class="story">` to the layout you picked (`story`, `single`, or `grid`). Delete every element marked `data-example` and add your cards. Keep the CSS and SVG sprite as they are.
 4. Check: no element still has a `data-example` attribute, and none of the placeholders above is left (a `{{` quoted from the repo's own code is fine).
-5. Save the file **outside the repo**: the session's scratchpad if one is given, else `${TMPDIR:-/tmp}/gpl-skills/explain-<topic>.html`.
+5. Save the file **outside the repo**: the session's scratchpad if one is given, else `${TMPDIR:-/tmp}/gpl/explain-<topic>.html`.
 
 ## Step 6: Deliver
 
