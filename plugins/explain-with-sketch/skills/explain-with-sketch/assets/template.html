@@ -2,494 +2,504 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
 <title>{{TITLE}}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   explain-with-sketch — hand-drawn card explainer
-   Keep this whole <style> block. Only add cards in <main>.
+   explain-with-sketch — cheat-sheet poster
+   Keep this whole <style> block, the SVG sprite and the wires
+   script. Only write sections inside .sheet.
+   Layout: two columns on one cream sheet. Left = where it sits,
+   states, shape, rules. Right = the main flow and its outcomes.
    ============================================================ */
 :root {
-  --page: #f3f3f1;
-  --dot: #d9d9d4;
-  --paper: #ffffff;
-  --ink: #2b2b2b;
-  --muted: #7a7a74;
-  --line: #e4e4df;
-  --yellow: #fde9a6;
-  --blue: #bfdcff;
-  --purple: #d9cbff;
-  --green: #c9efc4;
-  --orange: #ffd2a8;
-  --pink: #ffc9d6;
-  --gray: #ececea;
-  --u-blue: #5b8def;
-  --u-orange: #f0913a;
-  --u-purple: #8f6bf0;
-  --u-green: #3fae5a;
-  --u-red: #e2574c;
-  --shadow: 0 1px 2px rgba(0,0,0,.05), 0 4px 14px rgba(0,0,0,.05);
-  --hand: "Architects Daughter", "Comic Sans MS", "Segoe Print", cursive;
-  --note: "Caveat", "Architects Daughter", cursive;
+  --page: #fcf6ee;
+  --ink: #26362e;
+  --muted: #76807a;
+  --lav: #e4dcf7;      /* other places, start points, questions */
+  --here: #a89ae2;     /* the thing explained / set right here */
+  --here-ink: #ffffff;
+  --peach: #fcdcb7;    /* steps you take, data panels */
+  --mint: #d3ece1;     /* what happens, success, the gist */
+  --red: #f5b4a6;      /* refused, blocked */
+  --beige: #f0e9df;    /* conditions, neutral, set elsewhere, unknown */
+  --pink: #f8c9d3;     /* quirks, warnings */
+  --yes: #3a9a60;
+  --no: #d6473a;
+  --hand: "Patrick Hand", "Segoe Print", "Comic Sans MS", system-ui, cursive;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --page: #18181a; --dot: #2a2a2e; --paper: #222225; --ink: #e9e7e2; --muted: #a09e97; --line: #34343a;
-    --yellow: #5c4f1f; --blue: #1f3d63; --purple: #3c2f66; --green: #234a2b; --orange: #5e3a1c; --pink: #5a2a37; --gray: #333338;
-    --u-blue: #7ea6ff; --u-orange: #ffad60; --u-purple: #b29bff; --u-green: #6fd08a; --u-red: #ff8378;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+    --page: #1b1e1c; --ink: #ebe6dc; --muted: #a3aaa4;
+    --lav: #34304a; --here: #7a69d4; --here-ink: #ffffff; --peach: #57412a; --mint: #22453a;
+    --red: #63322c; --beige: #34312c; --pink: #59303c; --yes: #6fd08f; --no: #ff8576;
+    color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --page: #18181a; --dot: #2a2a2e; --paper: #222225; --ink: #e9e7e2; --muted: #a09e97; --line: #34343a;
-  --yellow: #5c4f1f; --blue: #1f3d63; --purple: #3c2f66; --green: #234a2b; --orange: #5e3a1c; --pink: #5a2a37; --gray: #333338;
-  --u-blue: #7ea6ff; --u-orange: #ffad60; --u-purple: #b29bff; --u-green: #6fd08a; --u-red: #ff8378;
-  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 18px rgba(0,0,0,.35);
+  --page: #1b1e1c; --ink: #ebe6dc; --muted: #a3aaa4;
+  --lav: #34304a; --here: #7a69d4; --here-ink: #ffffff; --peach: #57412a; --mint: #22453a;
+  --red: #63322c; --beige: #34312c; --pink: #59303c; --yes: #6fd08f; --no: #ff8576;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body {
-  background-color: var(--page);
-  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
-  background-size: 18px 18px;
-  color: var(--ink);
-  font-family: var(--hand);
-  font-size: 15px;
-  line-height: 1.45;
+  background: var(--page); color: var(--ink);
+  font-family: var(--hand); font-size: 16px; line-height: 1.3;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
   -webkit-font-smoothing: antialiased;
 }
-code, .mono { font-family: var(--mono); font-size: .82em; }
+code, .c { font-family: var(--mono); }
 
-/* ---------- page header ---------- */
-.top { max-width: 1320px; margin: 0 auto; padding: 36px 16px 8px; }
-.top h1 { font-size: clamp(26px, 4vw, 38px); margin: 0 0 6px; font-weight: 400; }
-.top .ask { font-family: var(--note); font-size: 22px; color: var(--muted); margin: 0 0 14px; }
-.meta { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 13px; color: var(--muted); }
-.meta code { color: var(--ink); }
-.legend { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); }
+/* ---------- the sheet: <main class="sheet"> or <main class="sheet one"> ---------- */
+.sheet {
+  position: relative; max-width: 1480px; margin: 0 auto; padding-block: 40px 28px;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); column-gap: 72px; row-gap: 48px;
+  align-items: start;
+}
+.sheet.one { max-width: 820px; grid-template-columns: minmax(0, 1fr); }
+.col { display: flex; flex-direction: column; gap: 52px; min-width: 0; }
+@media (max-width: 1100px) { .sheet { grid-template-columns: minmax(0, 1fr); } }
 
-/* ---------- layouts: <main class="story | single | grid"> ---------- */
-main { max-width: 1320px; margin: 0 auto; padding: 18px 16px 48px; }
+/* ---------- title block ---------- */
+.title h1 { font-size: clamp(52px, 8vw, 104px); font-weight: 400; line-height: .9; margin: 0 0 10px; letter-spacing: .01em; }
+.title .what { font-size: clamp(22px, 2.6vw, 32px); margin: 0; line-height: 1.15; }
+.title .where { font-family: var(--mono); font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+.title .meta { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.title .meta q { font-family: var(--hand); font-size: 16px; color: var(--ink); }
 
-/* grid — a board of independent cards */
-main.grid {
-  display: grid; gap: 18px;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+/* ---------- sections ---------- */
+.part { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.part h2 { font-size: clamp(24px, 2.4vw, 31px); font-weight: 400; margin: 0; line-height: 1.1; text-wrap: balance; }
+.part .lede { font-family: var(--mono); font-size: 13px; color: var(--muted); margin: -10px 0 4px; }
+
+/* ---------- shapes: borderless pastel fills with rough edges ---------- */
+.blob, .step, .out, .band, .chip, .box, .panel, .quirk, .tag {
+  position: relative; isolation: isolate; color: var(--ink); text-align: center; min-width: 0; overflow-wrap: anywhere;
+}
+.blob::before, .step::before, .out::before, .band::before, .chip::before, .box::before,
+.panel::before, .quirk::before, .tag::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--fill); border-radius: var(--r, 12px); filter: url(#rough);
 }
 
-/* story — one column, read top to bottom, numbered, arrows between steps */
-main.story { max-width: 940px; display: flex; flex-direction: column; counter-reset: step; }
-main.story .card {
-  min-height: 0; padding: 22px 26px 14px;
-  display: grid; column-gap: 28px;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  grid-template-areas: "h h" "s c" "s p";
-  grid-template-rows: auto 1fr auto;
-}
-main.story .card + .card { margin-top: 46px; position: relative; }
-main.story .card + .card::before {
-  content: ""; position: absolute; top: -42px; left: 50%; width: 20px; height: 38px; margin-left: -10px;
-  background: var(--muted);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 44' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 3 C 7 15, 13 26, 10 38'/%3E%3Cpath d='M4 31 L10 40 L16 31'/%3E%3C/svg%3E") center / contain no-repeat;
-          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 44' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 3 C 7 15, 13 26, 10 38'/%3E%3Cpath d='M4 31 L10 40 L16 31'/%3E%3C/svg%3E") center / contain no-repeat;
-}
-main.story .card h2 { grid-area: h; text-align: left; font-size: 21px; display: flex; align-items: center; gap: 10px; }
-main.story .card:not(.extra) h2::before {
-  counter-increment: step; content: counter(step);
-  flex: none; width: 30px; height: 30px; display: grid; place-items: center; font-size: 15px;
-  border: 1.8px solid var(--ink); border-radius: 50% 46% 52% 48%; background: var(--yellow); filter: url(#wobble);
-}
-main.story .sketch { grid-area: s; min-height: 190px; }
-main.story .cap { grid-area: c; text-align: left; font-size: 16px; align-self: center; margin: 0 0 12px; }
-main.story .proof { grid-area: p; }
-main.story .card.extra { grid-template-columns: 1fr; grid-template-areas: "h" "s" "c" "p"; }
-main.story .card.extra .cap { text-align: center; }
+/* text tiers inside any shape: .t main label · .s plain sub line · .c short technical detail (exact when it is code) */
+.t { display: block; font-size: 19px; line-height: 1.15; }
+.s { display: block; font-size: 15px; line-height: 1.2; }
+.c { display: block; font-size: 12px; line-height: 1.35; color: var(--muted); margin-top: 3px; }
+.here .c, .here .s { color: var(--here-ink); opacity: .88; }
+.ok { color: var(--yes); } .x { color: var(--no); }
 
-/* header + footer follow the layout's width */
-body:has(main.story) :is(.top, footer) { max-width: 940px; }
-body:has(main.single) :is(.top, footer) { max-width: 1040px; }
+.blob { --fill: var(--lav); --r: 50%; padding: 22px 34px; min-height: 104px; display: flex; flex-direction: column; justify-content: center; }
+.blob.big { padding: 30px 40px; min-height: 160px; }
+.blob.big .t { font-size: 30px; }
+.blob.wide { margin-inline: 6%; }
+.step { --fill: var(--peach); --r: 14px; padding: 22px 18px; min-height: 112px; display: flex; flex-direction: column; justify-content: center; }
+.step .t { font-size: 23px; }
+.step[data-n]::after {
+  content: attr(data-n); position: absolute; left: -17px; top: -15px; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--ink); color: var(--page); display: grid; place-items: center; font-size: 15px;
+}
+.out { --fill: var(--mint); --r: 10px; padding: 10px 16px; }
+.box { --fill: var(--beige); --r: 12px; padding: 14px 16px; }
+.band { --fill: var(--mint); --r: 12px; padding: 14px 22px; }
+.band .t { font-size: 22px; }
+.quirk { --fill: var(--pink); --r: 12px; padding: 14px 20px; }
+.quirk .t { font-size: 20px; }
+.panel { --fill: var(--peach); --r: 14px; padding: 18px 20px; display: flex; flex-direction: column; justify-content: center; }
+.tag { --fill: var(--beige); --r: 999px; padding: 3px 13px; font-size: 14px; white-space: nowrap; }
 
-/* single — one big sketch; .extra cards sit side by side underneath */
-main.single { max-width: 1040px; display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
-main.single .card:not(.extra) { grid-column: 1 / -1; min-height: 440px; padding: 26px 30px 16px; }
-main.single .card:not(.extra) h2 { font-size: 24px; }
-main.single .card:not(.extra) .cap { font-size: 16.5px; max-width: 680px; margin-inline: auto; }
-@media (min-width: 760px) { main.single .card:not(.extra) .sketch { zoom: 1.3; } }
+/* fill colors: scoped to .sheet so a color class beats every shape default */
+.sheet .lav { --fill: var(--lav); } .sheet .here { --fill: var(--here); color: var(--here-ink); } .sheet .peach { --fill: var(--peach); }
+.sheet .mint { --fill: var(--mint); } .sheet .red { --fill: var(--red); } .sheet .beige { --fill: var(--beige); } .sheet .pink { --fill: var(--pink); }
 
-@media (max-width: 680px) {
-  main.story .card { grid-template-columns: 1fr; grid-template-areas: "h" "s" "c" "p"; padding: 18px 18px 12px; }
-  main.story .cap { text-align: center; }
-  main.single { grid-template-columns: 1fr; }
+/* ---------- context row: upstream → here → downstream ---------- */
+.ctx { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr) auto minmax(0, 1fr); align-items: center; gap: 6px; padding-top: 58px; }
+.hop { position: relative; align-self: stretch; display: flex; align-items: center; justify-content: center; }
+.hop .note { position: absolute; left: 50%; bottom: calc(100% + 6px); transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 16px; }
+.hop .note .c { margin-top: 0; }
+.ctx-after { font-size: 16px; text-align: center; margin: 46px 0 0; }
+.n { display: inline-grid; place-items: center; width: 21px; height: 21px; border: 1.5px solid var(--ink); border-radius: 50%; font-size: 12px; margin-right: 4px; vertical-align: 1px; }
+@media (max-width: 700px) {
+  .ctx { grid-template-columns: minmax(0, 1fr); padding-top: 0; justify-items: stretch; }
+  .hop { flex-direction: column; align-items: center; gap: 2px; padding: 4px 0; }
+  .hop .note { position: static; transform: none; white-space: normal; }
+  .hop .arr { transform: rotate(90deg); margin: 8px 0; }
 }
 
-/* ---------- card ---------- */
-.card {
-  background: var(--paper);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
-  padding: 18px 18px 12px;
-  display: flex; flex-direction: column;
-  min-height: 300px;
-  min-width: 0;
+/* ---------- rows: a source on the left, outcomes on the right (wires drawn by script) ---------- */
+.row { display: grid; grid-template-columns: minmax(0, .62fr) minmax(0, 1fr); column-gap: 84px; align-items: center; }
+.outs { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.outs.across { flex-direction: row; flex-wrap: wrap; }
+.outs.across > * { flex: 1 1 110px; }
+.via { min-height: 84px; display: flex; align-items: center; font-size: 16px; }
+.via span { margin-left: calc((100% - 84px) * .1914 + 16px); }
+.flow { display: flex; flex-direction: column; }
+.flow > .blob { margin-bottom: 64px; }
+.cases { display: flex; flex-direction: column; gap: 22px; }
+@media (max-width: 640px) {
+  .row { column-gap: 34px; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); }
+  .via span { margin-left: calc((100% - 34px) * .2222 + 12px); }
+  .step .t { font-size: 19px; } .t { font-size: 16px; } .s { font-size: 13.5px; }
+  .blob { padding: 18px 20px; }
 }
-.card.wide { grid-column: span 2; }
-@media (max-width: 680px) { .card.wide { grid-column: auto; } }
-.card h2 { text-align: center; font-size: 19px; font-weight: 400; margin: 2px 0 14px; }
-.card h2 span { position: relative; display: inline-block; }
-.card h2 span::after {
-  content: ""; position: absolute; left: -6%; right: -6%; bottom: -3px; height: 3px;
-  background: var(--u, var(--u-blue)); border-radius: 3px 8px 2px 9px;
-  transform: rotate(-.7deg); filter: url(#wobble); opacity: .9;
-}
-.u-blue { --u: var(--u-blue); } .u-orange { --u: var(--u-orange); } .u-purple { --u: var(--u-purple); }
-.u-green { --u: var(--u-green); } .u-red { --u: var(--u-red); }
-.sketch {
-  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 10px; padding: 6px 0 10px; min-width: 0;
-}
-.cap { text-align: center; margin: 4px 0 8px; font-size: 14.5px; }
 
-/* proof drawer */
-.proof { border-top: 1.5px dashed var(--line); padding-top: 6px; font-size: 12.5px; color: var(--muted); }
-.proof summary { cursor: pointer; list-style: none; display: inline-flex; gap: 6px; align-items: center; }
+/* ---------- status lines ---------- */
+.lane { display: flex; flex-direction: column; gap: 8px; }
+.lane-name { font-size: 16px; margin: 0; }
+.lane-name .c { display: inline; }
+.chain { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 6px; }
+.st { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.chip { --fill: var(--beige); --r: 10px; min-width: 78px; padding: 8px 12px; }
+.chip .L { display: block; font-size: 23px; line-height: 1; }
+.chip .c { margin-top: 2px; }
+.st .by { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.chain > .arr { margin-top: 20px; }
+.backs { display: flex; flex-wrap: wrap; gap: 6px 40px; padding: 30px 0 0 34px; font-size: 15px; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* ---------- what one thing holds ---------- */
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: stretch; }
+.stack { display: flex; flex-direction: column; align-items: stretch; gap: 4px; }
+.stack > .arr { align-self: center; }
+.panel .t { margin-bottom: 2px; }
+.kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 20px; text-align: left; margin-top: 14px; }
+.kv dt { font-size: 16px; line-height: 1.15; }
+.kv dd { margin: 0; font-family: var(--mono); font-size: 12px; color: var(--muted); align-self: center; }
+@media (max-width: 640px) { .pair { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- outputs row ---------- */
+.outputs { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 16px; }
+
+/* ---------- arrows (static) ---------- */
+.arr { width: 44px; height: 18px; stroke: var(--ink); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; overflow: visible; filter: url(#rough-line); }
+.arr.d { width: 18px; height: 30px; }
+
+/* ---------- wires (drawn by the script from data-to) ---------- */
+.wires { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; filter: url(#rough-line); }
+.wires .dash { stroke-dasharray: 6 6; }
+
+/* ---------- proof drawer: closes every section ---------- */
+.proof { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.proof summary { cursor: pointer; list-style: none; display: inline-flex; gap: 6px; }
 .proof summary::-webkit-details-marker { display: none; }
 .proof summary::before { content: "▸"; transition: transform .15s; }
 .proof[open] summary::before { transform: rotate(90deg); }
-.proof ul { margin: 6px 0 2px; padding-left: 16px; }
+.proof summary:focus-visible { outline: 2px solid var(--here); outline-offset: 2px; }
+.proof ul { margin: 6px 0 0; padding-left: 18px; }
 .proof li { margin: 3px 0; overflow-wrap: anywhere; }
 .proof code { color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .proof summary::before { transition: none; } }
 
-/* ---------- sketch primitives ---------- */
-/* Every bordered shape draws its outline on ::before with the wobble filter,
-   so the line looks hand-drawn while the text stays crisp. */
-.box, .pill, .win, .bubble, .note, .file, .phone, .unknown, .stat-box {
-  position: relative; isolation: isolate; color: var(--ink);
-}
-.box::before, .pill::before, .win::before, .bubble::before, .note::before,
-.file::before, .phone::before, .unknown::before, .stat-box::before {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background: var(--fill, var(--paper));
-  border: 1.8px solid var(--ink);
-  border-radius: 10px 14px 9px 13px / 13px 9px 14px 10px;
-  filter: url(#wobble);
-}
-.yellow { --fill: var(--yellow); } .blue { --fill: var(--blue); } .purple { --fill: var(--purple); }
-.green { --fill: var(--green); } .orange { --fill: var(--orange); } .pink { --fill: var(--pink); }
-.gray { --fill: var(--gray); }
-
-.box { padding: 9px 13px; text-align: center; font-size: 13.5px; min-width: 70px; max-width: 100%; overflow-wrap: anywhere; }
-.box small, .unknown small, .sub { display: block; overflow-wrap: anywhere; font-size: 11.5px; color: var(--muted); }
-.pill { padding: 3px 11px; font-size: 12.5px; white-space: nowrap; }
-.pill::before { border-radius: 999px; }
-.unknown { padding: 9px 13px; color: var(--muted); font-size: 13px; text-align: center; }
-.unknown::before { border-style: dashed; background: transparent; }
-
-/* app/browser window */
-.win { width: 100%; max-width: 230px; padding: 22px 10px 10px; font-size: 12.5px; }
-.win .bar { position: absolute; top: 6px; left: 10px; right: 10px; display: flex; gap: 4px; align-items: center; font-size: 10.5px; color: var(--muted); }
-.win .bar i { width: 6px; height: 6px; border: 1.3px solid var(--ink); border-radius: 50%; }
-.win .bar span { margin-left: 6px; }
-.win .ln { height: 6px; border-radius: 4px; background: var(--line); margin: 6px 0; }
-.win .ln.s { width: 60%; }
-
-/* phone */
-.phone { width: 74px; height: 128px; padding: 18px 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 12px; }
-.phone::before { border-radius: 14px; }
-
-/* speech bubble */
-.bubble { padding: 8px 12px; font-size: 13px; max-width: 240px; }
-.bubble::after {
-  content: ""; position: absolute; left: 18px; bottom: -7px; width: 12px; height: 12px;
-  background: var(--fill, var(--paper)); border-right: 1.8px solid var(--ink); border-bottom: 1.8px solid var(--ink);
-  transform: rotate(45deg); z-index: -1;
-}
-
-/* code note / sticky */
-.note { font-family: var(--mono); font-size: 11.5px; padding: 10px 12px; max-width: 100%; transform: rotate(-.6deg); text-align: left; }
-.note pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; }
-.note .hl, .hl { background: linear-gradient(transparent 45%, var(--yellow) 45% 92%, transparent 92%); padding: 0 2px; }
-
-/* file with folded corner */
-.file { width: 54px; height: 66px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; font-size: 10.5px; }
-.file::before { border-radius: 4px 14px 4px 4px; }
-
-/* stats */
-.stat { text-align: center; }
-.stat b { display: block; font-size: 40px; font-weight: 400; line-height: 1; }
-.stat span { font-size: 12.5px; color: var(--muted); }
-
-/* bar chart: <i style="--h:60%"><em>12</em></i> */
-.bars { display: flex; align-items: flex-end; gap: 8px; height: 120px; padding: 0 4px; border-bottom: 1.8px solid var(--ink); }
-.bars i { position: relative; width: 22px; height: var(--h); background: var(--fill, var(--orange)); border: 1.6px solid var(--ink); border-bottom: 0; border-radius: 4px 4px 0 0; filter: url(#wobble); }
-.bars em { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 11px; }
-.bar-labels { display: flex; gap: 8px; padding: 0 4px; font-size: 10.5px; color: var(--muted); }
-.bar-labels span { width: 22px; text-align: center; }
-
-/* layout helpers */
-.row { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
-.row.nowrap { flex-wrap: nowrap; gap: 6px; }
-.stack { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.stack.left { align-items: flex-start; }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
-.split { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; width: 100%; align-items: start; }
-.split .divider { width: 0; align-self: stretch; border-left: 1.8px dashed var(--line); }
-.split h3 { font-size: 13px; font-weight: 400; margin: 0 0 6px; text-align: center; color: var(--muted); }
-.anno { font-family: var(--note); font-size: 17px; color: var(--muted); line-height: 1.1; }
-.label { font-size: 11.5px; color: var(--muted); text-align: center; }
-
-/* numbered steps */
-.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; width: 100%; }
-.steps li { position: relative; padding: 1px 0 0 31px; min-height: 22px; font-size: 13.5px; }
-.steps li::before {
-  counter-increment: s; content: counter(s);
-  position: absolute; left: 0; top: 0; width: 22px; height: 22px; display: grid; place-items: center; font-size: 12px;
-  border: 1.6px solid var(--ink); border-radius: 50% 45% 52% 48%; background: var(--fill, var(--yellow)); filter: url(#wobble);
-}
-.steps { counter-reset: s; }
-
-/* check list */
-.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; width: 100%; font-size: 13.5px; }
-.checks li { display: flex; gap: 8px; align-items: flex-start; }
-.checks .ico { flex: none; margin-top: 1px; }
-
-/* icons + arrows (from the sprite below) */
-.ico { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; filter: url(#wobble); overflow: visible; }
-.ico.lg { width: 40px; height: 40px; }
-.ico.xl { width: 58px; height: 58px; }
-.arr { width: 40px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; filter: url(#wobble); flex: none; overflow: visible; }
-.arr.down { width: 18px; height: 34px; }
-.arr.curve { width: 52px; height: 32px; }
-.ok { color: var(--u-green); } .bad { color: var(--u-red); } .dim { color: var(--muted); }
-
-footer { max-width: 1320px; margin: 0 auto; padding: 0 16px 40px; font-size: 12.5px; color: var(--muted); text-align: center; }
+/* ---------- footer ---------- */
+.foot { grid-column: 1 / -1; text-align: center; font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 8px; }
+.foot p { margin: 0; }
 </style>
 </head>
 <body>
 
-<!-- ============ SVG sprite: wobble filter + icons. Do not remove. ============ -->
+<!-- ============ SVG sprite: rough filters + arrows. Do not remove. ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n"/>
-      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    <filter id="rough" x="-4%" y="-8%" width="108%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="rough-line" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="9" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
   </defs>
-  <!-- arrows -->
-  <symbol id="arrow-r" viewBox="0 0 64 20"><path d="M3 11 C 18 7, 36 14, 57 10"/><path d="M49 4 L58 10 L49 16"/></symbol>
-  <symbol id="arrow-l" viewBox="0 0 64 20"><path d="M61 9 C 46 13, 28 6, 7 10"/><path d="M15 4 L6 10 L15 16"/></symbol>
-  <symbol id="arrow-d" viewBox="0 0 20 44"><path d="M10 3 C 7 15, 13 26, 10 38"/><path d="M4 31 L10 40 L16 31"/></symbol>
-  <symbol id="arrow-curve" viewBox="0 0 64 40"><path d="M4 34 C 14 6, 40 4, 56 18"/><path d="M47 13 L57 19 L46 23"/></symbol>
-  <symbol id="arrow-both" viewBox="0 0 64 20"><path d="M7 10 C 22 7, 40 13, 57 10"/><path d="M49 4 L58 10 L49 16"/><path d="M15 4 L6 10 L15 16"/></symbol>
-  <!-- icons (24x24) -->
-  <symbol id="i-user" viewBox="0 0 24 40"><circle cx="12" cy="6" r="4.5"/><path d="M12 11 L12 26 M12 15 L4 21 M12 15 L20 21 M12 26 L6 37 M12 26 L18 37"/></symbol>
-  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5 v13 c0 1.7 3.6 3 8 3 s8 -1.3 8 -3 V5"/><path d="M4 11.5 c0 1.7 3.6 3 8 3 s8 -1.3 8 -3"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 13 L9.5 18 L20 6"/></symbol>
-  <symbol id="i-cross" viewBox="0 0 24 24"><path d="M5 5 L19 19 M19 5 L5 19"/></symbol>
-  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11 V8 a4 4 0 0 1 8 0 v3"/></symbol>
-  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18 h10 a4 4 0 0 0 .5 -8 a5.5 5.5 0 0 0 -10.5 -1 a4 4 0 0 0 0 9 z"/></symbol>
-  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7"/><path d="M12 2v3 M12 19v3 M2 12h3 M19 12h3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M4.9 19.1L7 17 M17 7l2.1-2.1"/></symbol>
-  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3 h8 l4 4 v14 h-12 z M14 3 v4 h4"/><path d="M9 12 h6 M9 15 h6 M9 18 h4"/></symbol>
-  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7 v11 h18 V9 h-9 l-2 -2 z"/></symbol>
-  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18 M12 3c3 3 3 15 0 18 M12 3c-3 3 -3 15 0 18"/></symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7 v5 l3 2"/></symbol>
-  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 L5 14 h6 l-1 8 l8 -12 h-6 z"/></symbol>
-  <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5 a2.5 2.5 0 1 1 3.5 2.3 c-.8 .4 -1 1 -1 1.7"/><path d="M12 16.5 v.6"/></symbol>
-  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15 L20.5 20.5"/></symbol>
-  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3.5 7 L12 13 L20.5 7"/></symbol>
-  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="12" r="4"/><path d="M12 12 h9 M18 12 v3 M15.5 12 v2.5"/></symbol>
-  <symbol id="i-queue" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="4" rx="1"/><rect x="3" y="11" width="18" height="4" rx="1"/><rect x="3" y="17" width="12" height="3" rx="1"/></symbol>
-  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3 L22 20 H2 z"/><path d="M12 10 v4.5 M12 17 v.5"/></symbol>
-  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8 V4.5 M9.5 13 v.5 M14.5 13 v.5 M3 13 h2 M19 13 h2"/><circle cx="12" cy="3.5" r="1"/></symbol>
+  <symbol id="a-r" viewBox="0 0 64 20"><path d="M3 11 C 18 7, 36 14, 57 10"/><path d="M49 4 L58 10 L49 16"/></symbol>
+  <symbol id="a-d" viewBox="0 0 20 44"><path d="M10 3 C 7 15, 13 26, 10 38"/><path d="M4 31 L10 40 L16 31"/></symbol>
 </svg>
 
-<header class="top">
-  <h1>{{TITLE}}</h1>
-  <p class="ask">“{{QUESTION}}”</p>
-  <div class="meta">
-    <span>repo <code>{{REPO}}</code></span>
-    <span>commit <code>{{COMMIT}}</code></span>
-    <span>{{DATE}}</span>
-  </div>
-  <div class="legend">
-    <span class="pill green">proof</span> every card lists the code it came from
-    <span class="pill gray">unknown</span> means we checked and could not confirm
-  </div>
-</header>
+<main class="sheet">
+<svg class="wires" aria-hidden="true"></svg>
 
-<!-- Layout: story (default) · single · grid — see references/sketch-style.md -->
-<main class="story">
+<div class="col">
+
+  <header class="title">
+    <h1>{{NAME}}</h1>
+    <p class="what">{{WHAT}}</p>
+    <p class="where">{{WHERE}}</p>
+    <p class="meta"><q>{{QUESTION}}</q><span>repo <code>{{REPO}}</code></span><span>commit <code>{{COMMIT}}</code></span><span>{{DATE}}</span></p>
+  </header>
 
   <!-- =====================================================================
-       EXAMPLE CARDS — they show every sketch part. Delete every example
-       card (each is marked with an example attribute) and write your own
-       cards in the same shape:
-       <article class="card"> h2 > span · .sketch · p.cap · details.proof
+       EXAMPLE SECTIONS: a made-up "expense claim" screen that shows every
+       part. Delete every element marked with the example attribute and
+       write your own sections in the same shape (see references/sketch-style.md).
        ===================================================================== -->
 
-  <!-- FLOW: left-to-right boxes + arrows -->
-  <article class="card" data-example>
-    <h2 class="u-blue"><span>What saving a note does</span></h2>
-    <div class="sketch">
-      <div class="row nowrap">
-        <div class="box blue">You click<br>Save</div>
-        <svg class="arr"><use href="#arrow-r"/></svg>
-        <div class="box yellow">API<small>POST /notes</small></div>
-        <svg class="arr"><use href="#arrow-r"/></svg>
-        <div class="stack"><svg class="ico lg"><use href="#i-db"/></svg><span class="label">notes table</span></div>
-      </div>
-      <span class="anno">↳ returns the new id</span>
+  <!-- CONTEXT: what feeds in → you are here → what takes it out -->
+  <section class="part" data-example>
+    <div class="ctx">
+      <div class="blob" id="ex-up"><span class="t">Receipts</span><span class="s">upload screen</span><span class="c">RCP… at R</span></div>
+      <div class="hop"><span class="note"><span class="n">1</span>receipts attached<span class="c">status R</span></span><svg class="arr"><use href="#a-r"/></svg></div>
+      <div class="blob big here" id="ex-here"><span class="t">Expense claim</span><span class="s">EXP-210</span><span class="c">you are here</span></div>
+      <div class="hop"><span class="note"><span class="n">2</span>approved claims<span class="c">status A</span></span><svg class="arr"><use href="#a-r"/></svg></div>
+      <div class="blob" id="ex-down" data-to="ex-here" data-wire="under"><span class="t">Payout run</span><span class="s">weekly batch</span><span class="c">PAY… voucher</span></div>
     </div>
-    <p class="cap">The page sends the note. The API stores it. You get an id back.</p>
+    <p class="ctx-after"><span class="n">3</span>paid → comes back to close<span class="c">close button on EXP-210</span></p>
+    <div class="band"><span class="t">One trip · one claim · one approver → then pay</span></div>
     <details class="proof"><summary>proof · 3 refs</summary><ul>
-      <li><code>example/web/NoteEditor.tsx:58</code> — onSave posts to /notes</li>
-      <li><code>example/api/routes/notes.ts:21</code> — handler for POST /notes</li>
-      <li><code>example/api/db/notes.ts:12</code> — INSERT … RETURNING id</li>
+      <li><code>example/claims/submit.ts:14</code>: only receipts at R are listed</li>
+      <li><code>example/claims/approve.ts:40</code>: approve sets A</li>
+      <li><code>example/payout/run.ts:22</code>: takes claims at A</li>
     </ul></details>
-  </article>
+  </section>
 
-  <!-- STEPS: numbered sequence -->
-  <article class="card" data-example>
-    <h2 class="u-orange"><span>Step by step</span></h2>
-    <div class="sketch">
-      <ol class="steps">
-        <li>Check the user is logged in <span class="pill green">auth.ts:14</span></li>
-        <li>Validate title ≤ 200 chars</li>
-        <li>Insert row, get id</li>
-        <li>Send <code>201</code> with the note</li>
-      </ol>
+  <!-- STATUS LINES: every state field, every value, who sets each move -->
+  <section class="part" data-example>
+    <h2>Two status lines: don't mix them up</h2>
+    <div class="lane">
+      <p class="lane-name">Claim <span class="c">EXP…</span></p>
+      <div class="chain">
+        <div class="st" id="ex-n"><div class="chip here"><span class="L">N</span><span class="c">saved</span></div><span class="by">Save</span></div>
+        <svg class="arr"><use href="#a-r"/></svg>
+        <div class="st" id="ex-s" data-to="ex-n" data-wire="back"><div class="chip here"><span class="L">S</span><span class="c">submitted</span></div><span class="by">Submit</span></div>
+        <svg class="arr"><use href="#a-r"/></svg>
+        <div class="st"><div class="chip beige"><span class="L">A</span><span class="c">approved</span></div><span class="by">approver</span></div>
+        <svg class="arr"><use href="#a-r"/></svg>
+        <div class="st"><div class="chip beige"><span class="L">P</span><span class="c">paid</span></div><span class="by">payout run</span></div>
+      </div>
+      <div class="backs"><span>reject S → N</span></div>
     </div>
-    <p class="cap">Four steps, always in this order.</p>
+    <div class="lane">
+      <p class="lane-name">Receipt <span class="c">RCP…</span></p>
+      <div class="chain">
+        <div class="st"><div class="chip beige"><span class="L">R</span><span class="c">uploaded</span></div><span class="by">upload</span></div>
+        <svg class="arr"><use href="#a-r"/></svg>
+        <div class="st"><div class="chip here"><span class="L">L</span><span class="c">linked</span></div><span class="by">Save</span></div>
+      </div>
+    </div>
+    <div class="tags"><span class="tag here">set on this screen</span><span class="tag beige">set elsewhere</span><span class="tag red">claim S ≠ receipt S</span></div>
+    <details class="proof"><summary>proof · 4 refs</summary><ul>
+      <li><code>example/claims/save.ts:31</code>: status = 'N'</li>
+      <li><code>example/claims/submit.ts:52</code>: status = 'S'</li>
+      <li><code>example/claims/reject.ts:9</code>: S → N</li>
+      <li><code>example/receipts/link.ts:18</code>: R → L</li>
+    </ul></details>
+  </section>
+
+  <!-- SHAPE: what one record holds, plus a side panel of roles or kinds -->
+  <section class="part" data-example>
+    <h2>What one claim holds</h2>
+    <div class="pair">
+      <div class="stack">
+        <div class="box here"><span class="t">Header <span class="c" style="display:inline">EXP2610-…</span></span><span class="s">trip · owner · currency</span></div>
+        <svg class="arr d"><use href="#a-d"/></svg>
+        <div class="box lav"><span class="t">Lines</span><span class="s">one per expense</span><span class="c">amount · tax · category</span></div>
+        <svg class="arr d"><use href="#a-d"/></svg>
+        <div class="box lav"><span class="t">Receipts</span><span class="c">RCP… linked at L</span></div>
+      </div>
+      <div class="panel">
+        <span class="t">Who touches it</span><span class="s">who asks · who signs</span>
+        <dl class="kv">
+          <dt>Owner</dt><dd>creates, submits</dd>
+          <dt>Approver</dt><dd>depends on limit ↓</dd>
+          <dt>Finance</dt><dd>pays in the run</dd>
+        </dl>
+      </div>
+    </div>
     <details class="proof"><summary>proof · 2 refs</summary><ul>
-      <li><code>example/api/routes/notes.ts:21-44</code> — the full handler</li>
-      <li><code>example/api/validate.ts:8</code> — max length 200</li>
+      <li><code>example/db/schema.sql:12-40</code>: claim, claim_line, receipt tables</li>
+      <li><code>example/claims/roles.ts:5</code>: three roles</li>
     </ul></details>
-  </article>
+  </section>
 
-  <!-- MAP: where the code lives -->
-  <article class="card" data-example>
-    <h2 class="u-purple"><span>Where the code lives</span></h2>
-    <div class="sketch">
-      <div class="grid2">
-        <div class="box purple"><svg class="ico"><use href="#i-globe"/></svg><br>web/<small>React pages</small></div>
-        <div class="box yellow"><svg class="ico"><use href="#i-gear"/></svg><br>api/<small>HTTP routes</small></div>
-        <div class="box green"><svg class="ico"><use href="#i-db"/></svg><br>api/db/<small>SQL queries</small></div>
-        <div class="box gray"><svg class="ico"><use href="#i-clock"/></svg><br>jobs/<small>nightly cleanup</small></div>
+  <!-- RULE / DECISION: one question, its branches -->
+  <section class="part" data-example>
+    <h2>Who can approve</h2>
+    <div class="row">
+      <div class="blob" id="ex-q" data-to="ex-q1 ex-q2"><span class="t">Claim total vs limit</span><span class="c">LIMIT_APPROVE in settings</span></div>
+      <div class="outs">
+        <div class="out mint" id="ex-q1"><span class="t">Within limit</span><span class="c">manager</span></div>
+        <div class="out red" id="ex-q2"><span class="t">Over limit</span><span class="c">director only</span></div>
       </div>
     </div>
-    <p class="cap">Four folders. Each does one job.</p>
-    <details class="proof"><summary>proof · 1 ref</summary><ul>
-      <li><code>example/package.json:5</code> — workspaces: web, api, jobs</li>
-    </ul></details>
-  </article>
-
-  <!-- WHY: code note + bubble explaining a rule -->
-  <article class="card" data-example>
-    <h2 class="u-blue"><span>Why the title gets cut</span></h2>
-    <div class="sketch">
-      <div class="bubble yellow">Why is my title shorter?</div>
-      <div class="note"><pre>if (title.length &gt; 200)
-  title = <span class="hl">title.slice(0, 200)</span></pre></div>
-      <span class="anno">it trims, it does not reject</span>
-    </div>
-    <p class="cap">Long titles are cut at 200 characters, silently.</p>
-    <details class="proof"><summary>proof · 1 ref</summary><ul>
-      <li><code>example/api/validate.ts:8-9</code> — slice, no error thrown</li>
-    </ul></details>
-  </article>
-
-  <!-- WHO CALLS WHAT: actor → hub → fan-out -->
-  <article class="card" data-example>
-    <h2 class="u-green"><span>Who uses the notes API</span></h2>
-    <div class="sketch">
-      <div class="row nowrap">
-        <div class="stack"><svg class="ico lg"><use href="#i-user"/></svg><span class="label">web app</span></div>
-        <svg class="arr"><use href="#arrow-r"/></svg>
-        <div class="box green">notes API</div>
-        <svg class="arr"><use href="#arrow-l"/></svg>
-        <div class="stack"><svg class="ico lg"><use href="#i-clock"/></svg><span class="label">cleanup job</span></div>
-      </div>
-      <div class="row"><span class="pill blue">GET /notes</span><span class="pill yellow">POST /notes</span><span class="pill pink">DELETE /notes/:id</span></div>
-    </div>
-    <p class="cap">Two callers. The job only deletes.</p>
-    <details class="proof"><summary>proof · 2 refs</summary><ul>
-      <li><code>example/web/api.ts:3-30</code> — three fetch calls</li>
-      <li><code>example/jobs/cleanup.ts:17</code> — DELETE only</li>
-    </ul></details>
-  </article>
-
-  <!-- BEFORE / AFTER -->
-  <article class="card" data-example>
-    <h2 class="u-orange"><span>Draft vs saved</span></h2>
-    <div class="sketch">
-      <div class="split">
-        <div class="stack"><h3>draft</h3><div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="ln"></div><div class="ln s"></div></div><span class="label">lives in localStorage</span></div>
-        <div class="divider"></div>
-        <div class="stack"><h3>saved</h3><svg class="ico xl"><use href="#i-db"/></svg><span class="label">lives in the database</span></div>
-      </div>
-    </div>
-    <p class="cap">Drafts stay in your browser until you press Save.</p>
-    <details class="proof"><summary>proof · 1 ref</summary><ul>
-      <li><code>example/web/useDraft.ts:6</code> — localStorage.setItem("draft", …)</li>
-    </ul></details>
-  </article>
-
-  <!-- NUMBERS: stats + bars -->
-  <article class="card" data-example>
-    <h2 class="u-purple"><span>By the numbers</span></h2>
-    <div class="sketch">
-      <div class="row" style="gap:28px">
-        <div class="stat"><b>3</b><span>routes</span></div>
-        <div class="stat"><b>200</b><span>max title chars</span></div>
-      </div>
-      <div>
-        <div class="bars"><i style="--h:30%"><em>3</em></i><i style="--h:80%"><em>8</em></i><i style="--h:50%"><em>5</em></i></div>
-        <div class="bar-labels"><span>web</span><span>api</span><span>jobs</span></div>
-      </div>
-      <span class="label">files per folder</span>
-    </div>
-    <p class="cap">Small app: most code sits in the API.</p>
-    <details class="proof"><summary>proof · 1 ref</summary><ul>
-      <li>counted with <code>find example -name '*.ts'</code></li>
-    </ul></details>
-  </article>
-
-  <!-- UNKNOWN: always include when something could not be confirmed. Class "extra" = not a numbered step -->
-  <article class="card extra" data-example>
-    <h2 class="u-red"><span>What we couldn't confirm</span></h2>
-    <div class="sketch">
-      <div class="unknown"><svg class="ico"><use href="#i-question"/></svg><br>How often the cleanup job runs<small>schedule lives outside the repo</small></div>
-      <div class="unknown">Which DB engine runs in production<small>only a local SQLite config was found</small></div>
-    </div>
-    <p class="cap">We checked. The repo doesn't say.</p>
-    <details class="proof"><summary>what we checked</summary><ul>
-      <li><code>example/jobs/cleanup.ts</code> — no schedule inside</li>
-      <li>searched for <code>cron</code>, <code>schedule</code> — no hits</li>
-    </ul></details>
-  </article>
-
-  <!-- START HERE: reading list. Class "extra" = not a numbered step -->
-  <article class="card extra" data-example>
-    <h2 class="u-green"><span>Where to start reading</span></h2>
-    <div class="sketch">
-      <ul class="checks">
-        <li><svg class="ico"><use href="#i-doc"/></svg><span><code>api/routes/notes.ts</code><span class="sub">every route in one file</span></span></li>
-        <li><svg class="ico"><use href="#i-doc"/></svg><span><code>web/NoteEditor.tsx</code><span class="sub">the save button</span></span></li>
-        <li><svg class="ico"><use href="#i-doc"/></svg><span><code>api/db/notes.ts</code><span class="sub">all SQL</span></span></li>
-      </ul>
-    </div>
-    <p class="cap">Open these three files, in this order.</p>
+    <div class="quirk"><span class="t">⚠ quirk: "total" leaves tax out</span><span class="c">compares net amount · approve.ts keeps it on purpose</span></div>
+    <div class="outputs">Prints: <span class="tag mint">claim PDF</span><span class="tag mint">CSV export</span></div>
     <details class="proof"><summary>proof · 3 refs</summary><ul>
-      <li>same refs as the cards above</li>
+      <li><code>example/claims/approve.ts:12-20</code>: limit check</li>
+      <li><code>example/claims/approve.ts:15</code>: uses net, not gross</li>
+      <li><code>example/claims/print.ts:3, 30</code>: PDF and CSV</li>
     </ul></details>
-  </article>
+  </section>
+
+</div>
+
+<div class="col">
+
+  <!-- MAIN FLOW: start → numbered steps → every outcome of every step -->
+  <section class="part" data-example>
+    <h2>Submit a claim</h2>
+    <p class="lede">manual here · or auto from the receipts screen</p>
+    <div class="flow">
+      <div class="blob wide" id="ex-start" data-to="ex-1"><span class="t">Fill the header: trip first</span><span class="s">trip · owner · currency</span><span class="c">the trip filters what Add can show</span></div>
+      <div class="row">
+        <div class="step" id="ex-1" data-n="1" data-to="ex-1a ex-1b ex-1c ex-2"><span class="t">Add lines</span><span class="c">popup → tick → OK</span></div>
+        <div class="outs">
+          <div class="out red" id="ex-1a"><span class="t"><span class="x">✗</span> No trip picked yet</span><span class="c">popup refused</span></div>
+          <div class="out mint" id="ex-1b"><span class="t">Lists only receipts at R</span><span class="c">same trip · same currency</span></div>
+          <div class="out beige" id="ex-1c"><span class="t">Remove → receipt back to R</span><span class="c">free for another claim</span></div>
+        </div>
+      </div>
+      <div class="via"><span>add every line, then</span></div>
+      <div class="row">
+        <div class="step" id="ex-2" data-n="2" data-to="ex-2a ex-2b ex-2c ex-3"><span class="t">Save</span><span class="c">claim → N</span></div>
+        <div class="outs">
+          <div class="out mint" id="ex-2a"><span class="t">Claim number issued</span><span class="c">'EXP' + yymm + '-' + running no. · 12 chars</span></div>
+          <div class="out mint" id="ex-2b"><span class="t">Receipts R → L</span><span class="c">no other claim can take them</span></div>
+          <div class="out red" id="ex-2c"><span class="t"><span class="x">✗</span> Already submitted</span><span class="c">save refused</span></div>
+        </div>
+      </div>
+      <div class="via"><span>check the total, then</span></div>
+      <div class="row">
+        <div class="step" id="ex-3" data-n="3" data-to="ex-3a ex-3b ex-3c"><span class="t">Submit</span><span class="c">claim → S · locked</span></div>
+        <div class="outs">
+          <div class="out mint" id="ex-3a"><span class="t">Claim N → S <span class="ok">✓</span></span><span class="c">waits for the approver</span></div>
+          <div class="out mint" id="ex-3b"><span class="t">E-mail to approver</span><span class="c">template CLAIM_SUBMITTED</span></div>
+          <div class="out beige" id="ex-3c"><span class="t">NOTIFY_FLAG = 'Y'</span><span class="c">read by something outside the repo ?</span></div>
+        </div>
+      </div>
+    </div>
+    <details class="proof"><summary>proof · 6 refs</summary><ul>
+      <li><code>example/claims/lines.ts:20</code>: refuses when trip is empty</li>
+      <li><code>example/claims/lines.ts:34</code>: WHERE status = 'R' AND trip = …</li>
+      <li><code>example/claims/save.ts:8-14</code>: number format</li>
+      <li><code>example/claims/save.ts:22</code>: refused when status ≠ N</li>
+      <li><code>example/claims/submit.ts:52-60</code>: S, lock, e-mail</li>
+      <li><code>example/claims/submit.ts:61</code>: NOTIFY_FLAG = 'Y'</li>
+    </ul></details>
+  </section>
+
+  <!-- UNDO: condition → result rows -->
+  <section class="part" data-example>
+    <h2>Revert</h2>
+    <p class="lede">claim at S</p>
+    <div class="cases">
+      <div class="row">
+        <div class="box beige" id="ex-r1" data-to="ex-r1o"><span class="t">nothing paid yet</span></div>
+        <div class="outs"><div class="out mint" id="ex-r1o"><span class="t"><span class="ok">✓</span> claim → N · receipts L → R</span><span class="c">e-mail is not taken back</span></div></div>
+      </div>
+      <div class="row">
+        <div class="box beige" id="ex-r2" data-to="ex-r2o"><span class="t">already paid</span></div>
+        <div class="outs"><div class="out red" id="ex-r2o"><span class="t"><span class="x">✗</span> can't revert</span><span class="c">reverse the payout first</span></div></div>
+      </div>
+    </div>
+    <details class="proof"><summary>proof · 2 refs</summary><ul>
+      <li><code>example/claims/revert.ts:10-18</code>: both branches</li>
+      <li><code>example/claims/revert.ts:12</code>: refused at P</li>
+    </ul></details>
+  </section>
+
+  <!-- HAND-OFF: where the result goes next -->
+  <section class="part" data-example>
+    <h2>Pay it: in the payout run</h2>
+    <p class="lede">takes claims at A</p>
+    <div class="row">
+      <div class="blob" id="ex-p" data-to="ex-po"><span class="t">Weekly payout</span><span class="c">ticks claims at A</span></div>
+      <div class="outs"><div class="out mint" id="ex-po"><span class="t">Saved as PAY… <span class="ok">✓</span></span><span class="s">payment voucher</span><span class="c">claim → P · revert now blocked</span></div></div>
+    </div>
+    <details class="proof"><summary>proof · 1 ref</summary><ul>
+      <li><code>example/payout/run.ts:22-48</code>: voucher, claim → P</li>
+    </ul></details>
+  </section>
+
+</div>
+
+<footer class="foot">
+  <p data-example>? who reads NOTIFY_FLAG · when the payout run is scheduled: not confirmed in the repo</p>
+  <p data-example>start reading: <code>example/claims/submit.ts</code> → <code>example/claims/save.ts</code> → <code>example/db/schema.sql</code></p>
+  <!-- legend: keep its meaning, write it in the user's language -->
+  <p><span class="ok">✓</span> happens · <span class="x">✗</span> refused · ? not confirmed in the repo · read-only explainer: nothing in the repo was changed</p>
+</footer>
 
 </main>
 
-<footer>Read-only explainer · nothing in the repo was changed · every card lists its proof</footer>
+<!-- ============ wires: draws a hand-drawn arrow from every [data-to] element
+     to each id it lists. data-wire="under" = curve below (same row only),
+     "back" = the same, dashed. Do not remove. ============ -->
+<script>
+(() => {
+  const sheet = document.querySelector('.sheet');
+  const svg = sheet && sheet.querySelector('svg.wires');
+  if (!svg) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  let seed = 7;
+  const jit = () => { seed = (seed * 9301 + 49297) % 233280; return (seed / 233280 - 0.5) * 6; };
+  const f = n => n.toFixed(1);
+  const add = (d, cls) => { const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); if (cls) p.setAttribute('class', cls); svg.appendChild(p); };
+  const head = (x, y, a) => {
+    const back = s => `${f(x - 10 * Math.cos(a + s))} ${f(y - 10 * Math.sin(a + s))}`;
+    add(`M${back(-0.45)} L${f(x)} ${f(y)} L${back(0.45)}`);
+  };
+  const midX = r => (r.left + r.right) / 2, midY = r => (r.top + r.bottom) / 2;
+
+  function wire(a, b, kind) {
+    if (kind === 'under' || kind === 'back') {
+      if (Math.abs(midY(a) - midY(b)) > 40) return;   // only when side by side
+      const sx = midX(a), sy = a.bottom + 6, ex = midX(b), ey = b.bottom + 8, dip = Math.max(sy, ey) + 34;
+      add(`M${f(sx)} ${f(sy)} C${f(sx)} ${f(dip)}, ${f(ex)} ${f(dip)}, ${f(ex)} ${f(ey)}`, kind === 'back' ? 'dash' : '');
+      head(ex, ey, -Math.PI / 2);
+      return;
+    }
+    let sx, sy, ex, ey, c1x, c1y, c2x, c2y, ang;
+    if (b.left >= a.right - 4) {                 // target to the right: fan out
+      sx = a.right + 8; sy = midY(a); ex = b.left - 8; ey = midY(b);
+      const d = Math.max(22, (ex - sx) * 0.5);
+      c1x = sx + d; c1y = sy; c2x = ex - d; c2y = ey; ang = 0;
+    } else if (b.top >= a.bottom - 4) {          // target below
+      sx = midX(a); sy = a.bottom + 8; ex = midX(b); ey = b.top - 8;
+      const d = Math.max(18, (ey - sy) * 0.5);
+      c1x = sx; c1y = sy + d; c2x = ex; c2y = ey - d; ang = Math.PI / 2;
+    } else if (b.right <= a.left + 4) {          // target to the left
+      sx = a.left - 8; sy = midY(a); ex = b.right + 8; ey = midY(b);
+      const d = Math.max(22, (sx - ex) * 0.5);
+      c1x = sx - d; c1y = sy; c2x = ex + d; c2y = ey; ang = Math.PI;
+    } else {                                     // target above
+      sx = midX(a); sy = a.top - 8; ex = midX(b); ey = b.bottom + 8;
+      const d = Math.max(18, (sy - ey) * 0.5);
+      c1x = sx; c1y = sy - d; c2x = ex; c2y = ey + d; ang = -Math.PI / 2;
+    }
+    add(`M${f(sx)} ${f(sy)} C${f(c1x + jit())} ${f(c1y + jit())}, ${f(c2x + jit())} ${f(c2y + jit())}, ${f(ex)} ${f(ey)}`);
+    head(ex, ey, ang);
+  }
+
+  function draw() {
+    seed = 7;
+    svg.replaceChildren();
+    const base = sheet.getBoundingClientRect();
+    svg.setAttribute('width', sheet.scrollWidth);
+    svg.setAttribute('height', sheet.scrollHeight);
+    const rel = el => { const r = el.getBoundingClientRect(); return { left: r.left - base.left, right: r.right - base.left, top: r.top - base.top, bottom: r.bottom - base.top }; };
+    sheet.querySelectorAll('[data-to]').forEach(src => {
+      if (!src.getClientRects().length) return;
+      for (const id of src.dataset.to.trim().split(/\s+/)) {
+        const dst = document.getElementById(id);
+        if (!dst) { console.warn('[explain-with-sketch] no element with id', id); continue; }
+        if (dst.getClientRects().length) wire(rel(src), rel(dst), src.dataset.wire || 'auto');
+      }
+    });
+  }
+  let raf = 0;
+  const soon = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); };
+  new ResizeObserver(soon).observe(sheet);
+  sheet.addEventListener('toggle', soon, true);
+  if (document.fonts) document.fonts.ready.then(soon);
+  window.addEventListener('load', soon);
+  soon();
+})();
+</script>
 </body>
 </html>

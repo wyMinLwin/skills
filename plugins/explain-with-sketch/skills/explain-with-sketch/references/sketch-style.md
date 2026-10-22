@@ -1,76 +1,91 @@
-# Sketch style
+# Poster style
 
-The look: white cards on a dotted page, a handwritten font, thin wobbly ink outlines, pastel fills, one colored marker underline under each title, a one-line caption at the bottom. Calm, sparse, lots of white space — like a whiteboard drawing, not a dashboard.
+The look: one cream sheet like a whiteboard cheat sheet. Borderless pastel shapes with rough, hand-painted edges. Dark ink arrows, a handwritten font, and small gray monospace lines for exact code values. No cards, no shadows, no paragraphs. Every idea is a shape with a short label.
 
-All parts below already exist in `assets/template.html`. Use them; don't write new CSS.
+Every part below already exists in `assets/template.html`, and the example sections there show each one. Use them; don't write new CSS.
 
-## Layouts — `<main class="…">`
+## The sheet
 
-| Class | Looks like | Notes |
+| Markup | Use |
+|---|---|
+| `<main class="sheet">` | Full sheet: two columns. Use it when 4+ coverage rows were Found. |
+| `<main class="sheet one">` | Half sheet: one column, for one rule, one decision or one "why". |
+| left `.col` | usually: title → context + gist → status lines → what one X holds → rules / decisions → quirk → outputs |
+| right `.col` | usually: main flow → undo / revert → hand-off ("then it goes to…"). A second real flow gets its own flow section here too |
+| `footer.foot` | one `?` line per unknown (or one combined line), a "start reading" line, and the legend line (keep its meaning; write it in the user's language) |
+
+A rule or decision can sit next to the flow it governs instead of in the left column.
+
+Each section is `<section class="part">` with an `h2` (optional for the context section right under the title), an optional `.lede` line (mono, what it takes in, e.g. "takes registers at P"), its shapes, then a proof drawer.
+
+## Sections, one per coverage row
+
+| Coverage row | Section | Parts |
 |---|---|---|
-| `story` | One column of wide cards, numbered, with a hand-drawn arrow between each. Sketch on the left, 1–3 sentence caption on the right. | Default. Numbers come automatically. |
-| `single` | One big card with an enlarged sketch; the extra cards sit side by side underneath. | For one flow / one rule. Put the most detail into this one sketch (it can use up to ~8 shapes). |
-| `grid` | A board of small cards, 4 across on desktop. | Only when the user asks for it, or for many unordered parts. `article.card.wide` spans two columns. |
+| Context (+ hand-off) | upstream → **you are here** → downstream, with a circled number and a note over each hop | `.ctx` › `.blob` · `.hop` (`.note` with `.n` + `.c`, then `<svg class="arr"><use href="#a-r"/></svg>`) · `.blob.big.here`; return trip: `data-wire="under"` + `p.ctx-after` |
+| Gist | the whole idea in one line | `.band` › `.t` |
+| States | one lane per status field: value chips in order, who sets each under it, dashed back-arrows for reverts, a tag legend | `.lane` › `.lane-name` · `.chain` › `.st` (`.chip` › `.L` + `.c`, then `.by`) + `.arr`; `data-wire="back"` on the `.st`; `.backs` labels; `.tags` › `.tag` |
+| Shape | parts of one record stacked with down arrows, plus a side panel for roles or kinds | `.pair` › `.stack` (`.box` + `<svg class="arr d"><use href="#a-d"/></svg>`) · `.panel` › `dl.kv` |
+| Main flow | a start shape, then numbered steps down a spine with a label on each gap, each step fanning out to its outcomes | `.flow` › `.blob.wide` · `.row` (`.step[data-n]` + `.outs` › `.out`) · `.via` › `span` |
+| Outcomes | 2–4 per step, every refusal with its condition | `.out.mint` / `.out.red` / `.out.beige` inside the step's `.outs` |
+| Undo | condition → result rows | `.cases` › `.row` (`.box.beige` + `.outs` › `.out`) |
+| Rules | one question → its branches | `.row` (`.blob` + `.outs`), or a `.panel` with `dl.kv` for a table of limits |
+| Quirks | the surprise, then why in code terms | `.quirk` › `.t` (starts with ⚠) + `.c` |
+| Outputs | prints, exports, messages | `.outputs` › text + `.tag.mint` chips |
+| Context: hand-off | what the next place does with the result, when the code shows it | `.row` (`.blob` + `.outs` › `.out.mint`) |
+| Unknowns | `?` lines in the footer; an unconfirmed outcome can also be a beige `.out` ending in `?` | `footer.foot` › `p` |
 
-Mark the Unknown and Where-to-start cards `class="card extra"`: in `story` they get no step number, in `single` they sit under the main card.
+Leave out sections the code has nothing for. Don't draw empty ones, and don't stretch a section's meaning to fill it (a repo with no records has no "what one record holds").
 
-## Pick the sketch by what you are explaining
+## Text inside a shape
 
-| You are explaining… | Sketch | Parts |
+| Tier | Class | Content |
 |---|---|---|
-| What happens when X (a request, a click, a job) | **Flow** — 2–4 boxes left→right with arrows | `.row.nowrap` · `.box.<color>` · `<svg class="arr"><use href="#arrow-r"/></svg>` |
-| An ordered procedure (5+ steps or steps with conditions) | **Steps** — numbered list | `ol.steps > li` |
-| How the repo / module is laid out | **Map** — 2×2 or 2×3 labeled boxes with icons | `.grid2` · `.box` · `.ico` |
-| Why a value / behavior is what it is | **Why** — question bubble + code note + annotation | `.bubble` · `.note > pre` · `.hl` · `.anno` |
-| Who calls what, fan-in / fan-out | **Hub** — actors around one box, pills for the calls | `.stack` + `#i-user`/`#i-bot` · `.box` · `.pill` |
-| Two modes, old vs new, A vs B | **Split** — two columns with a dashed divider | `.split` · `.divider` · `h3` |
-| A vertical pipeline or layers | **Stack** — boxes with down arrows | `.stack` · `<svg class="arr down"><use href="#arrow-d"/></svg>` |
-| Counts, sizes, limits found in code | **Numbers** — big stats, optional bars | `.stat` · `.bars` + `.bar-labels` |
-| UI screens / pages | **Window** or **Phone** frames | `.win` (`.bar`, `.ln`) · `.phone` |
-| Things the code could not confirm | **Unknown** — dashed boxes | `.unknown` (always the second-to-last card when any exist) |
-| Where to start reading | **Checklist** of files | `ul.checks` + `#i-doc` (always the last card) |
+| main | `.t` | the label, ≤ 6 words |
+| sub | `.s` | plain words that add meaning (optional) |
+| code | `.c` | a short technical detail, ≤ ~50 chars (optional): an identifier, value, format, route, condition or message. Copy it exactly when it is code |
 
-## Colors carry meaning — keep it consistent within one page
+Marks: `<span class="ok">✓</span>` = it happens · `<span class="x">✗</span>` = refused (the `.c` line says the condition or the message) · `?` = not confirmed in the repo.
 
-- `blue` — the user / caller / input
-- `yellow` — the main thing being explained, or a highlight
-- `purple` — internal component / service
-- `green` — success, storage, output
-- `orange` — rules, limits, decisions
-- `pink` — errors, deletes, failure paths
-- `gray` — external / out of scope
+Escape `<`, `>`, `&` in labels (`&lt;` `&gt;` `&amp;`).
 
-Title underline colors (`h2.u-blue`, `u-orange`, `u-purple`, `u-green`, `u-red`): rotate through them; use `u-red` only for the Unknown card.
+## Colors carry meaning
 
-## Icons in the sprite
+| Class | Means |
+|---|---|
+| `here` (purple) | the thing explained; states set right here |
+| `lav` (lavender) | other places, start points, questions |
+| `peach` | steps the user or caller takes; data panels |
+| `mint` | what happens; success; the gist |
+| `red` | refused or blocked |
+| `beige` | conditions, neutral results, states set elsewhere, unconfirmed |
+| `pink` | quirks and warnings |
 
-`#i-user` `#i-bot` `#i-db` `#i-cloud` `#i-globe` `#i-gear` `#i-doc` `#i-folder` `#i-clock` `#i-queue` `#i-mail` `#i-lock` `#i-key` `#i-bolt` `#i-search` `#i-warn` `#i-question` `#i-check` `#i-cross` — sizes: `.ico` (26px), `.ico.lg`, `.ico.xl`. Color: add `.ok`, `.bad`, `.dim`.
+Defaults: `.blob` lav, `.step` and `.panel` peach, `.out` and `.band` mint, `.box` / `.chip` / `.tag` beige, `.quirk` pink. Add a color class to change one.
 
-Arrows: `#arrow-r`, `#arrow-l`, `#arrow-d` (with `.arr.down`), `#arrow-curve` (with `.arr.curve`), `#arrow-both`.
+## Wires (arrows between shapes)
 
-## Density limits (keep it sketch-like)
+- Put `data-to="id1 id2 …"` on the source shape and an `id` on each target. Ids must be unique on the page.
+- The script picks the sides itself. A target to the right gets a fan-out curve, and that's how a step reaches its outcomes. A target below gets a down arrow, and that's how a step reaches the next step.
+- `data-wire="under"` draws a curve under two side-by-side shapes (a return trip). `data-wire="back"` draws the same curve dashed (a revert between state chips).
+- `data-wire` applies to every target of that source. A shape that needs a normal wire and an under wire can't carry both, so put the under wire on the other shape (downstream → here, not here → downstream).
+- Don't add a `data-to` where a static arrow already joins the two shapes (a hop, a chain); you'd draw the arrow twice.
+- Short fixed arrows inside a chain, a hop or a stack are static: `<svg class="arr"><use href="#a-r"/></svg>` (right) and `<svg class="arr d"><use href="#a-d"/></svg>` (down).
 
-- A sketch has at most ~6 shapes, not counting arrows. More than that → split into two cards.
-- Box text: 1–4 words, plus an optional `<small>` sub-label (a path, route, or function name).
-- Code notes: ≤ 4 lines, only the lines that prove the point, copied exactly from the file. Mark skipped lines with a `…` line.
-- In `grid`, a wide card (`article.card.wide`) is allowed for a flow that truly needs 5 boxes. Use at most one or two per page. `story` cards are already wide.
+## Density
 
-## Card skeleton
+- A step has 2–4 outcomes: the boxes in its `.outs`. The arrow to the next step isn't one. If you found more, the step is really two steps.
+- Full sheet: usually 6–10 sections and 40–90 shapes. Half sheet: 1–3 sections. These are guides, not caps.
+- Every number, format, limit and condition you found in the code gets a `.c` line. That detail is the point of the poster.
+- No sentences longer than one line on the sheet. An idea that needs a paragraph needs another shape.
+
+## Proof drawer: closes every section
 
 ```html
-<article class="card">
-  <h2 class="u-blue"><span>Short title</span></h2>
-  <div class="sketch">
-    <!-- one sketch from the table above -->
-  </div>
-  <p class="cap">One plain sentence, 15 words or fewer.</p>
-  <details class="proof"><summary>proof · 2 refs</summary><ul>
-    <li><code>src/path/file.ts:42</code> — what this line shows</li>
-    <li><code>src/path/other.ts:10-18</code> — what these lines show</li>
-  </ul></details>
-</article>
+<details class="proof"><summary>proof · 2 refs</summary><ul>
+  <li><code>src/path/file.ts:42</code>: what this line shows</li>
+  <li><code>src/path/other.sql:10-18</code>: what these lines show</li>
+</ul></details>
 ```
 
-The summary count is the number of `<li>` refs. The Unknown card uses `<summary>what we checked</summary>` instead.
-
-Escape `<`, `>`, `&` inside code notes (`&lt;` `&gt;` `&amp;`).
+The count is the number of `<li>`. Put a `<details class="proof"><summary>what we checked</summary>…` in the footer for the unknowns.
