@@ -34,13 +34,15 @@ On older Claude Code:
 
 Restart Claude Code after installing.
 
-**Coming from 0.2.0 or earlier?** The old plugin was called `explain-with-sketch`. Replace it:
+**Coming from an older version?** The plugin used to be called `explain-with-sketch` (0.1.0–0.2.0) or `gpl-skills` (0.3.0). Replace it:
 
 ```
 /plugin marketplace update gpl
 /plugin uninstall explain-with-sketch@gpl
 /plugin install gpl@gpl
 ```
+
+If you had 0.3.0, uninstall `gpl-skills@gpl` instead.
 
 ## Use
 
@@ -86,7 +88,8 @@ claude plugin validate .
 
 ## Versions
 
-- **0.3.0**: one plugin, `gpl`, holds every skill. `explain-with-sketch` goes back to the 0.1.0 cards. The 0.2.0 poster becomes its own skill, `sketch-map`, now with short words only and sized to fit one page. The reading harness goes deeper, and both skills share it:
+- **0.3.1**: the plugin is renamed from `gpl-skills` to `gpl`. Install it with `/plugin install gpl@gpl`; the commands are `/gpl:explain-with-sketch` and `/gpl:sketch-map`.
+- **0.3.0**: one plugin, `gpl-skills`, holds every skill. `explain-with-sketch` goes back to the 0.1.0 cards. The 0.2.0 poster becomes its own skill, `sketch-map`, now with short words only and sized to fit one page. The reading harness goes deeper, and both skills share it:
   - explore every candidate and what calls it
   - log open questions
   - trace one real case end to end
