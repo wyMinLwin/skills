@@ -1,11 +1,11 @@
 {
-  "name": "gpl",
+  "name": "gcl",
   "owner": {
     "name": "Wai Yan Min Lwin"
   },
   "metadata": {
     "description": "Claude Code skills by Wai Yan Min Lwin. One plugin, every skill.",
-    "version": "0.3.2"
+    "version": "0.3.3"
   },
   "plugins": [
     {
