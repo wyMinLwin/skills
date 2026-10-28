@@ -1,6 +1,6 @@
 # gpl
 
-Claude Code skills by Wai Yan Min Lwin. One plugin, `gpl`, holds every skill, so one install gets them all.
+Claude Code skills by Wai Yan Min Lwin. One plugin, `gcl`, holds every skill, so one install gets them all.
 
 | Skill | What it does |
 |---|---|
@@ -22,35 +22,35 @@ Pages and replies stay in the user's language. When a question is unclear, they 
 ## Install
 
 ```
-/plugin install gpl --marketplace wyMinLwin/skills
+/plugin install gcl --marketplace wyMinLwin/skills
 ```
 
 On older Claude Code:
 
 ```
 /plugin marketplace add wyMinLwin/skills
-/plugin install gpl@gpl
+/plugin install gcl@gpl
 ```
 
 Restart Claude Code after installing.
 
-**Coming from an older version?** The plugin used to be called `explain-with-sketch` (0.1.0–0.2.0) or `gpl-skills` (0.3.0). Replace it:
+**Coming from an older version?** The plugin used to be called `explain-with-sketch` (0.1.0–0.2.0), `gpl-skills` (0.3.0) or `gpl` (0.3.1). Replace it:
 
 ```
 /plugin marketplace update gpl
 /plugin uninstall explain-with-sketch@gpl
-/plugin install gpl@gpl
+/plugin install gcl@gpl
 ```
 
-If you had 0.3.0, uninstall `gpl-skills@gpl` instead.
+If you had 0.3.0 or 0.3.1, uninstall `gpl-skills@gpl` or `gpl@gpl` instead.
 
 ## Use
 
 Both skills trigger on their own: "how does checkout work?" usually gets cards, while "cheat sheet of the auth flow" or "map out checkout" gets a map. To call one directly:
 
 ```
-/gpl:explain-with-sketch how does the login flow work?
-/gpl:sketch-map map the login flow
+/gcl:explain-with-sketch how does the login flow work?
+/gcl:sketch-map map the login flow
 ```
 
 ## Layout
@@ -58,7 +58,7 @@ Both skills trigger on their own: "how does checkout work?" usually gets cards, 
 ```
 .claude-plugin/
   marketplace.json                 marketplace "gpl", one plugin at ./
-  plugin.json                      plugin "gpl" (the version lives here)
+  plugin.json                      plugin "gcl" (the version lives here)
 skills/
   explain-with-sketch/
     SKILL.md                       reading harness + card workflow
@@ -88,6 +88,7 @@ claude plugin validate .
 
 ## Versions
 
+- **0.3.2**: the plugin is renamed from `gpl` to `gcl`. Install it with `/plugin install gcl@gpl`; the commands are `/gcl:explain-with-sketch` and `/gcl:sketch-map`. The marketplace is still `gpl`.
 - **0.3.1**: the plugin is renamed from `gpl-skills` to `gpl`. Install it with `/plugin install gpl@gpl`; the commands are `/gpl:explain-with-sketch` and `/gpl:sketch-map`.
 - **0.3.0**: one plugin, `gpl-skills`, holds every skill. `explain-with-sketch` goes back to the 0.1.0 cards. The 0.2.0 poster becomes its own skill, `sketch-map`, now with short words only and sized to fit one page. The reading harness goes deeper, and both skills share it:
   - explore every candidate and what calls it
